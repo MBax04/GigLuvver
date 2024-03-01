@@ -1,0 +1,15 @@
+{% extends 'templates/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Login or Create Account.
+{% endblock %}
+
+{% block body_block %}
+<h1>Login</h1>
+    Username: <input type="text" name="username" value="" size="50" />
+    <br />
+    Password: <input type="password" name="password" value="" size="50" />
+    <br />
+    <!-- <a href="{% url 'createAccount' %}">Creat new Account</a><br /> -->
+{% endblock %}

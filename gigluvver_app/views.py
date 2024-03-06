@@ -1,12 +1,32 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.urls import reverse
+from django.contrib.auth import authenticate, login
+from gigluvver_app.forms import UserForm, ArtistProfileForm
 
 def home(request):
     return HttpResponse("The Home page works <a href='/gigluvver_app/log_in/'>About</a>")
 
 
-def log_in(request):
-    return HttpResponse("The log_in page works")
+def log_in(request):    
+    if request.method == 'POST':
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            if user.is_active:
+                login(request, user)
+                return redirect(reverse('gig_luvver:home'))
+            else:
+                return HttpResponse("Your account with GigLuvver has been disabled.")
+        
+        else:
+            print("Wrong username/password.")
+            return HttpResponse("Invalid login details.")
+    else:
+        return HttpResponse("The log_in page works")
 
 def my_tickets(request):
     return HttpResponse("The my_tickets page works")
@@ -18,13 +38,74 @@ def create_account(request):
     return HttpResponse("The create_account page works")
 
 def create_user_account(request):
+    registered = False
+
+    if request.method == 'POST':
+        user_form = UserForm(request.POST)
+
+        if user_form.is_valid():
+            user = user_form.save()
+            
+            user.set_password(user.password)
+            user.save()
+
+            registered = True
+        else:
+            print(user_form.errors)
+    else:
+        user_form = UserForm()
+
     return HttpResponse("The create_user_account page works")
 
 def create_artist_account(request):
+    registered = False
+
+    if request.method == 'POST':
+        user_form = UserForm(request.POST)
+        profile_form = ArtistProfileForm(request.POST)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            
+            user.set_password(user.password)
+            user.save()
+
+            profile = profile_form.save(commit=False)
+            profile.user = user
+
+            if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
+
+            profile.save()
+
+            registered = True
+        else:
+            print(user_form.errors, profile_form.errors)
+    else:
+        user_form = UserForm()
+        profile_form = ArtistProfileForm()
+
     return HttpResponse("The create_artist_account page works")
 
 def artist_log_in(request):
-    return HttpResponse("The artist_log_in page works")
+    if request.method == 'POST':
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            if user.is_active:
+                login(request, user)
+                return redirect(reverse('gig_luvver:home'))
+            else:
+                return HttpResponse("Your account with GigLuvver has been disabled.")
+        
+        else:
+            print("Wrong username/password.")
+            return HttpResponse("Invalid login details.")
+    else:
+        return HttpResponse("The artist_log_in page works")
 
 def my_gigs(request):
     return HttpResponse("The my_gigs page works")
@@ -40,3 +121,4 @@ def gig(request):
 
 def map(request):
     return HttpResponse("The map page works")
+

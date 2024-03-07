@@ -6,8 +6,8 @@ from django.urls import reverse
 from gigluvver_app.forms import UserForm, ArtistProfileForm
 
 def home(request):
-    return HttpResponse("The Home page works <a href='/gigluvver_app/log_in/'>About</a>")
-
+    response = render(request, 'home.html')
+    return response
 
 def log_in(request):
     if request.method == 'POST':
@@ -25,13 +25,16 @@ def log_in(request):
             print(f"Invalid login details: {username}, {password}")
             return HttpResponse("Invalid login details supplied.")
     else:
-        return HttpResponse("The log_in page works")
+        response = render(request, 'user_login.html')
+        return response
 
 def my_tickets(request):
-    return HttpResponse("The my_tickets page works")
+    response = render(request, 'tickets.html')
+    return response
 
 def user_profile(request):
-    return HttpResponse("The user_profile page works")
+    response = render(request, 'account.html')
+    return response
 
 def create_account(request):
     return HttpResponse("The create_account page works")
@@ -54,7 +57,8 @@ def create_user_account(request):
     else:
         user_form = UserForm()
 
-    return HttpResponse("The create_user_account page works")
+    response = render(request, 'create_user_account.html')
+    return response
     #render(request,
         # 'gigluvver_app/login-createaccount.html',
         # context = {'user_form': user_form,
@@ -94,7 +98,8 @@ def create_artist_account(request):
     #              context = {'user_form': user_form,
     #                         'profile_form': profile_form,
     #                         'registered': registered})
-    return HttpResponse("The create_artist_account page works")
+    response = render(request, 'create_artist_account.html')
+    return response
 
 def artist_log_in(request):
     if request.method == 'POST':
@@ -112,17 +117,20 @@ def artist_log_in(request):
             print(f"Invalid login details: {username}, {password}")
             return HttpResponse("Invalid login details supplied.")
     else:
-        return HttpResponse("The artist_log_in page works")
-
+        response = render(request, 'artist_login.html')
+        return response
 
 def my_gigs(request):
-    return HttpResponse("The my_gigs page works")
+    response = render(request, 'my_gigs.html')
+    return response
 
 def artist_profile(request):
-    return HttpResponse("The artist_profile page works")
+    response = render(request, 'artistAccount.html')
+    return response
 
 def gigs(request):
-    return HttpResponse("The gigs page works")
+    response = render(request, 'gigs.html')
+    return response
 
 def gig(request):
     return HttpResponse("The gig page works")

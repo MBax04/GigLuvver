@@ -1,4 +1,4 @@
-{% extends 'templates/base.html' %}
+{% extends 'base.html' %}
 {% load staticfiles %}
 
 {% block title_block %}
@@ -11,5 +11,5 @@
     <br />
     Password: <input type="password" name="password" value="" size="50" />
     <br /> -->
-    <a href="{% url 'gigluvver_apps:create_user_account/' %}">Creat new Account</a><br />
+    <a href="{% url 'gigluvver_app:create_user_account' %}">Creat new Account</a><br />
 {% endblock %}

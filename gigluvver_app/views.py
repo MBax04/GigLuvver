@@ -18,7 +18,7 @@ def log_in(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return redirect(reverse('rango:index'))
+                return redirect(reverse('gigluvver_app:home'))
             else:
                 return HttpResponse("Your account is disabled.")
         else:
@@ -75,6 +75,7 @@ def create_artist_account(request):
 
             profile = profile_form.save(commit=False)
             profile.user = user
+            profile.isArtist = True
 
             if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']
@@ -104,7 +105,7 @@ def artist_log_in(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return redirect(reverse('rango:index'))
+                return redirect(reverse('gigluvver_app:home'))
             else:
                 return HttpResponse("Your account is disabled.")
         else:

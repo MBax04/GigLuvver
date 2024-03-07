@@ -1,5 +1,5 @@
 from django import forms
-from gigluvver_app.models import UserProfile, ArtistProfile
+from gigluvver_app.models import UserProfile
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
@@ -11,5 +11,5 @@ class UserForm(forms.ModelForm):
 		
 class ArtistProfileForm(forms.ModelForm):
 	class Meta:
-		model = ArtistProfile
+		model = UserProfile
 		fields = ('stageName', 'picture')

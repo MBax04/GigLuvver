@@ -75,7 +75,7 @@ def create_artist_account(request):
 
             profile = profile_form.save(commit=False)
             profile.user = user
-            profile.isArtist = True
+            profile.is_artist = True
 
             if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']

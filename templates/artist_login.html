@@ -2,11 +2,10 @@
 {% load staticfiles %}
 
 {% block title_block %}
-    Artist Login or Create Account.
+    GigLuvver - Artist Login or Create Account.
 {% endblock %}
 
 {% block body_block %}
-<h1>Login</h1>
     <form id="login_form" method="post" action="{% url 'gigluvver_app:artist_log_in' %}">
     {% csrf_token %}
     Username: <input type="text" name="username" value="" size="50" />

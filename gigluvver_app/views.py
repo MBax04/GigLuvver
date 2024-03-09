@@ -54,3 +54,7 @@ def map(request):
 def change_profile_picture(request):
     response = render(request, 'change_profile_picture.html')
     return response
+
+def create_gig(request):
+    response = render(request, 'create_gig.html')
+    return response

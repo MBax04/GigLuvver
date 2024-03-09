@@ -2,8 +2,18 @@
 {% load staticfiles %}
 
 {% block title_block %}
-    Create Artist Account
+GigLuvver - Create User Account
 {% endblock %}
 
 {% block body_block %}
+<form id="user_form" method="post" action="{% url 'gigluvver_app:create_artist_account' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ user_form.as_p }}
+    {{ profile_form.as_p }}
+    Username: <input type="text" name="username" value="" size="50" />
+    <br />
+    Password: <input type="password" name="password" value="" size="50" />
+    <br />
+    <input type="submit" name="submit" value="Create account" />
+</form>
 {% endblock %}

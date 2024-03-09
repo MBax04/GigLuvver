@@ -57,12 +57,9 @@ def create_user_account(request):
     else:
         user_form = UserForm()
 
-    response = render(request, 'create_user_account.html')
+    response = render(request, 'create_user_account.html',
+                      context = {'user_form': user_form, 'registered': registered})
     return response
-    #render(request,
-        # 'gigluvver_app/login-createaccount.html',
-        # context = {'user_form': user_form,
-        # 'registered': registered})
 
 def create_artist_account(request):
     registered = False
@@ -92,13 +89,11 @@ def create_artist_account(request):
     else:
         user_form = UserForm()
         profile_form = ArtistProfileForm()
-
-    #return render(request,
-    #              'gigluvver_app/artistLogin-createAccount.html',
-    #              context = {'user_form': user_form,
-    #                         'profile_form': profile_form,
-    #                         'registered': registered})
-    response = render(request, 'create_artist_account.html')
+        
+    response = render(request, 'create_artist_account.html',
+                      context = {'user_form': user_form,
+                                 'profile_form': profile_form,
+                                 'registered': registered})
     return response
 
 def artist_log_in(request):

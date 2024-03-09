@@ -50,3 +50,7 @@ def gig(request):
 
 def map(request):
     return HttpResponse("The map page works")
+
+def change_profile_picture(request):
+    response = render(request, 'change_profile_picture.html')
+    return response

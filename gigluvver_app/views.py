@@ -45,7 +45,8 @@ def gigs(request):
     return response
 
 def gig(request):
-    return HttpResponse("The gig page works")
+    response = render(request, 'gig.html')
+    return response
 
 def map(request):
     return HttpResponse("The map page works")

@@ -14,11 +14,19 @@
         }
 
         #topbar {
-            background-color: #333;
-            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #38004ec0;
+            color: #ffffff;
             padding: 10px;
-            text-align: center;
             width: 100%;
+        }
+
+        #topbar-buttons {
+            display: flex;
+            gap: 10px;
+            margin-right: 20px;
         }
 
         #content-container {
@@ -28,7 +36,7 @@
 
         #sidebar {
             width: 200px;
-            background-color: #f1f1f1;
+            background-color: #c743ff69;
             padding: 10px;
             height: 100vh;
         }
@@ -37,18 +45,33 @@
             flex: 1;
             padding: 20px;
         }
+
+        /* Style for buttons */
+        .topbar-button {
+            background-color: #01ff0977;
+            border: none;
+            color: white;
+            padding: 10px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body> 
     <div id="topbar">
         <h1>{% block title_block %}Gig Luvver{% endblock %}</h1>
+        <div id="topbar-buttons">
+            <a href="{% url 'gigluvver_app:log_in' %}" class="topbar-button">Login</a>
+            <a href="{% url 'gigluvver_app:artist_log_in' %}" class="topbar-button">Artist Login</a>
+        </div>
     </div>
     <div id="content-container">
         <div id="sidebar">
             <ul>
                 <li><a href="{% url 'gigluvver_app:home' %}">HomePage</a></li>
-                <li><a href="{% url 'gigluvver_app:log_in' %}">Login or Create Account</a></li>
-                <li><a href="{% url 'gigluvver_app:artist_log_in' %}">Artist Login or Create Account</a></li>
                 <li><a href="{% url 'gigluvver_app:gigs' %}">Gigs</a></li>
                 <li><a href="{% url 'gigluvver_app:user_profile' %}">Profile</a></li>
                 <!-- Add more links as needed -->
@@ -61,3 +84,4 @@
     </div>
 </body>
 </html>
+

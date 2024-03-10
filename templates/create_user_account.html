@@ -6,7 +6,7 @@ GigLuvver - Create User Account
 {% endblock %}
 
 {% block body_block %}
-<form id="user_form" method="post" action="{% url 'gigluvver_app:create_artist_account' %}" enctype="multipart/form-data">
+<form id="user_form" method="post" action="{% url 'gigluvver_app:create_user_account' %}" enctype="multipart/form-data">
     {% csrf_token %}
     {{ user_form.as_p }}
     {{ profile_form.as_p }}

@@ -7,7 +7,7 @@ urlpatterns = [
     path('', views.home, name = 'home'),
     path('log_in/', views.log_in, name = 'log_in'),
     path('my_tickets/', views.my_tickets, name = 'my_tickets'),
-    path('user_profile/', views.user_profile, name = ' user_profile'),
+    path('user_profile/', views.user_profile, name = 'user_profile'),
     path('create_account/', views.create_account, name = 'create_account'),
     path('create_user_account/', views.create_user_account, name = 'create_user_account'),
     path('create_artist_account/', views.create_artist_account, name = 'create_artist_account'),
@@ -17,4 +17,6 @@ urlpatterns = [
     path('gigs/', views.gigs, name = 'gigs'),
     path('gig/', views.gig, name = 'gig'),
     path('map/', views.map, name = 'map'),
+    path('change_profile_picture/', views.change_profile_picture, name = 'change_profile_picture'),
+    path('create_gig/', views.create_gig, name = 'create_gig'),
 ]

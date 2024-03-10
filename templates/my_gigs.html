@@ -1,9 +1,13 @@
-{% extends 'templates/base.html' %}
+{% extends 'base.html' %}
 {% load staticfiles %}
 
 {% block title_block %}
-    My Gigs
+GigLuvver - My Gigs
 {% endblock %}
 
 {% block body_block %}
+<a href="{% url 'gigluvver_app:create_gig' %}">Create new gig</a><br />
+<a href="{% url 'gigluvver_app:gig' %}">Test Gig</a>
+    <!-- List of my gigs for artist
+    ability to create new gig -->
 {% endblock %}

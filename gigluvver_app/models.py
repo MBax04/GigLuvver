@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Performer(models.Model):
-    UserName = models.CharField(max_length=128, unique=True)
+    User = models.OneToOneField(User, on_delete=models.CASCADE)
     StageName = models.CharField(max_length=128)
     Genre = models.CharField(max_length=128)
     ProfilePicture = models.ImageField(upload_to='./media/profile_images', blank=True)
@@ -34,18 +34,9 @@ class Gig(models.Model):
 
 
 class Attendee(models.Model):
-    UserName = models.CharField(max_length=128, unique=True)
+    User = models.OneToOneField(User, on_delete=models.CASCADE)
     Gigs = models.ManyToManyField(Gig)
+    ProfilePicture = models.ImageField(upload_to='./media/profile_images', blank=True)
 
     def __str__(self):
-        return self.UserName
-
-class UserProfile(models.Model):
-	user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-	is_artist = models.BooleanField(default=False)
-	stage_name = models.CharField(default='Artist Name', max_length=30)
-	picture = models.ImageField(upload_to='profile_images', blank=True)
-
-	def __str__(self):
-		return self.user.username
+        return self.User.username

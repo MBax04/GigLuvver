@@ -2,10 +2,16 @@
 {% load staticfiles %}
 
 {% block title_block %}
-    My Artist Account
+GigLuvver - My Artist Account
 {% endblock %}
 
 {% block body_block %}
-    <!-- List of my gigs -->
-    <a href="{% url 'gigluvver_app:my_gigs' %}">My Profile</a><br />
+    <!-- profile info -->
+
+    <img src="{% static 'images/default_profile_picture.jpg' %}" alt="Default Profile Picture" style="width: 300px; height: 300px; border-radius: 50%;"><br/>
+    <a href="{% url 'gigluvver_app:change_profile_picture' %}">Change Profile Picture</a><br/>
+
+    <h2>Test UserName</h2>
+
+    <a href="{% url 'gigluvver_app:my_gigs' %}">My Gigs</a><br />
 {% endblock %}

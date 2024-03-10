@@ -2,10 +2,18 @@
 {% load staticfiles %}
 
 {% block title_block %}
-    My Account
+GigLuvver - My Account
 {% endblock %}
 
 {% block body_block %}
-    <!-- List of personal upcoming gigs to attend -->
-    <a href="{% url 'gigluvver_app:my_tickets' %}">Tickets</a><br />
+    <!-- profile information -->
+
+    <img src="{% static 'images/default_profile_picture.jpg' %}" alt="Default Profile Picture" style="width: 300px; height: 300px; border-radius: 50%;"><br/>
+    <a href="{% url 'gigluvver_app:change_profile_picture' %}">Change Profile Picture</a><br/>
+
+    <h2>Test UserName</h2>
+
+    <a href="{% url 'gigluvver_app:my_tickets' %}">All Tickets</a><br/>
+
+    <!-- List of next three gigs by date -->
 {% endblock %}

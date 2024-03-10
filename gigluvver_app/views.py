@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth import authenticate, login
 from django.urls import reverse
-
+from django.contrib.auth import authenticate, login
 from gigluvver_app.forms import UserForm, ArtistProfileForm
 
 def home(request):

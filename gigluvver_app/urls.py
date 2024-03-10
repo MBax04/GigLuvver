@@ -17,4 +17,5 @@ urlpatterns = [
     path('gigs/', views.gigs, name = 'gigs'),
     path('gig/', views.gig, name = 'gig'),
     path('map/', views.map, name = 'map'),
+    path('log_out/', views.log_out, name='log_out')
 ]

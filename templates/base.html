@@ -63,9 +63,19 @@
 <body> 
     <div id="topbar">
         <h1>{% block title_block %}Gig Luvver{% endblock %}</h1>
+        {% if user.is_authenticated %}
+                <p>Welcome {{ user.username }}!</p>
+            {% else %}
+                <p>Welcome!</p>
+            {% endif %}
         <div id="topbar-buttons">
+            {% if user.is_authenticated %}
+            <a href="{% url 'gigluvver_app:log_out' %}" class="topbar-button">Logout</a>
+            {% else %}
             <a href="{% url 'gigluvver_app:log_in' %}" class="topbar-button">Login</a>
             <a href="{% url 'gigluvver_app:artist_log_in' %}" class="topbar-button">Artist Login</a>
+            {% endif %}
+
         </div>
     </div>
     <div id="content-container">
@@ -73,8 +83,10 @@
             <ul>
                 <li><a href="{% url 'gigluvver_app:home' %}">HomePage</a></li>
                 <li><a href="{% url 'gigluvver_app:gigs' %}">Gigs</a></li>
+                {% if user.is_authenticated %}
                 <li><a href="{% url 'gigluvver_app:user_profile' %}">Profile</a></li>
                 <li><a href="{% url 'gigluvver_app:artist_profile' %}">Artist Profile</a></li>
+                {% endif %}
                 <!-- Add more links as needed -->
             </ul>
         </div>

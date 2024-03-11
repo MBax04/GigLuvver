@@ -10,6 +10,8 @@ GigLuvver - Create User Account
     {% csrf_token %}
     {{ user_form.as_p }}
     {{ profile_form.as_p }}
+
+  
     <input type="submit" name="submit" value="Create account" />
 </form>
 {% endblock %}

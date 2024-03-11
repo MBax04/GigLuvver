@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+GigLuvver - Change Profile Picture
+{% endblock %}
+
+{% block body_block %}
+<form id="profile_picture_form" method="post" action="{% url 'gigluvver_app:change_profile_picture' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <label for="id_profile_picture">Profile Picture:</label><br>
+    <input type="file" id="id_profile_picture" name="profile_picture" accept="image/*">
+    <br><br>
+    
+    <input type="submit" value="Change Profile Picture">
+</form>
+{% endblock %}

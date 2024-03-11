@@ -1,12 +1,38 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class UserProfile(models.Model):
-	user = models.OneToOneField(User, on_delete=models.CASCADE)
+class Performer(models.Model):
+    User = models.OneToOneField(User, on_delete=models.CASCADE)
+    StageName = models.CharField(max_length=128, unique=True)
+    Genre = models.CharField(max_length=128)
+    ProfilePicture = models.ImageField(upload_to='./media/profile_images', blank=True)
 
-	is_artist = models.BooleanField(default=False)
-	stage_name = models.CharField(default='Artist Name', max_length=30)
-	picture = models.ImageField(upload_to='profile_images', blank=True)
+    def __str__(self):
+        return self.StageName
 
-	def __str__(self):
-		return self.user.username
+class Venue(models.Model):
+    VenueName = models.CharField(max_length=128, unique=True)
+    Location = models.CharField(max_length=128)
+
+    def __str__(self):
+        return self.VenueName
+
+class Gig(models.Model):
+    GigID = models.CharField(max_length=128, unique=True)
+    GigName = models.CharField(max_length=128, default="Default Name", unique=True)
+    Date = models.DateField()
+    Time = models.TimeField()
+    PerformersStageNames = models.ManyToManyField(Performer)
+    GigPicture = models.ImageField(upload_to='./media/gig_images', blank=True)
+    Venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.GigName
+
+class Attendee(models.Model):
+    User = models.OneToOneField(User, on_delete=models.CASCADE)
+    Gigs = models.ManyToManyField(Gig)
+    ProfilePicture = models.ImageField(upload_to='./media/profile_images', blank=True)
+
+    def __str__(self):
+        return self.User.username

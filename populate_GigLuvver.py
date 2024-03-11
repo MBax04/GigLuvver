@@ -36,6 +36,7 @@ def populate():
         {'name': 'Barrowland Ballroom', 'location': '244 Gallowgate, Glasgow G4 0TT'},
         {'name': 'Hydro', 'location': 'Exhibition Way, Stobcross Rd, Glasgow G3 8YW'},
         {'name': 'Bellahouston Park', 'location': '16 Dumbreck Rd, Bellahouston, Glasgow G41 5BW'},
+        {'name': 'King Tuts Wah Wah Hut', 'location': '272A St Vincent St, Glasgow G2 5RL'}
     ]
 
     for data in venue_data:

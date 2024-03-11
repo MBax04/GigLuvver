@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth import authenticate, login
 from django.urls import reverse
-
+from django.contrib.auth import authenticate, login, logout
 from gigluvver_app.forms import UserForm, ArtistProfileForm
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     response = render(request, 'home.html')
@@ -28,10 +28,17 @@ def log_in(request):
         response = render(request, 'user_login.html')
         return response
 
+@login_required
+def log_out(request):
+    logout(request)
+    return redirect(reverse('gigluvver_app:home'))
+
+@login_required
 def my_tickets(request):
     response = render(request, 'tickets.html')
     return response
 
+@login_required
 def user_profile(request):
     response = render(request, 'account.html')
     return response
@@ -115,10 +122,12 @@ def artist_log_in(request):
         response = render(request, 'artist_login.html')
         return response
 
+@login_required
 def my_gigs(request):
     response = render(request, 'my_gigs.html')
     return response
 
+@login_required
 def artist_profile(request):
     response = render(request, 'artistAccount.html')
     return response

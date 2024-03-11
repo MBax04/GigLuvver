@@ -1,36 +1,30 @@
 from django.test import TestCase
 from django.urls import reverse
-from gigluvver_app import urls
+from gigluvver_app import urls,test_resources
 
 class PageResponseTests(TestCase):
     def test_response(self):
         for url in urls.urlpatterns:
             response = self.client.get(reverse(f"gigluvver_app:{url.name}"))
-            print(f"Fetching {url.name}")
-            self.assertEquals(response.status_code, 200, f"Failed to retrieve {url.name}.")
-
-general_links = ['home','log_in','artist_log_in','gigs']
-log_in_links = ['home','my_tickets','sign_out','user_profile','gigs']
-log_in_artist_links = ['home','my_tickets','sign_out','artist_profile','gigs']
-
-links = {'home':general_links,
-         'log_in':general_links,
-         'my_tickets':log_in_links,
-         'user_profile':log_in_links,
-         'create_account':general_links,
-         'create_user_account':general_links,
-         'create_artist_account':general_links,
-         'artist_log_in':general_links,
-         'my_gigs':log_in_artist_links,
-         'artist_profile':log_in_artist_links,
-         'gigs':general_links,
-         'gig':general_links,
-         'map':general_links}
+            self.assertEquals(response.status_code, 200, f"{test_resources.HEADER_FOOTER}Failed to retrieve {url.name}.{test_resources.HEADER_FOOTER}")
 
 class PageLinkLoginTests(TestCase):
     def test_links(self):
         for url in urls.urlpatterns:
             response = self.client.get(reverse(f"gigluvver_app:{url.name}"))
-            print(f"Fetching {url.name}: ", end="")
-            for link in links[url.name]:
-                self.assertContains(response, f'<a href="{reverse(f"gigluvver_app:{link}")}">', msg_prefix=f"The {url.name} page is missing a {link} link.")
+            for link in test_resources.links[url.name]:
+                self.assertContains(response, f'<a href="{reverse(f"gigluvver_app:{link}")}">', msg_prefix=f"{test_resources.HEADER_FOOTER}The {url.name} page is missing a {link} link.{test_resources.HEADER_FOOTER}")
+
+class AuthenticationTests(TestCase):
+    def test_create_artist_get(self):
+        test_resources.test_create_get(self,'create_artist_account', test_resources.create_artist_fields)
+    
+    def test_create_user_get(self):
+        test_resources.test_create_get(self,'create_user_account', test_resources.create_user_fields)
+
+    
+    def test_blank_create_user_post(self):
+        test_resources.test_blank_create_post(self,'create_user_account')
+
+    def test_blank_create_artist_post(self):
+        test_resources.test_blank_create_post(self,'create_artist_account')

@@ -19,4 +19,5 @@ urlpatterns = [
     path('map/', views.map, name = 'map'),
     path('change_profile_picture/', views.change_profile_picture, name = 'change_profile_picture'),
     path('create_gig/', views.create_gig, name = 'create_gig'),
+    path('log_out/', views.log_out, name= 'log_out')
 ]

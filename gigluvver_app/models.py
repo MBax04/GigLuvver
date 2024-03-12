@@ -1,14 +1,23 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class Performer(models.Model):
-    User = models.OneToOneField(User, on_delete=models.CASCADE)
-    StageName = models.CharField(max_length=128, unique=True)
-    Genre = models.CharField(max_length=128)
+class UserProfile(models.Model):
+    UserField = models.OneToOneField(User, on_delete=models.CASCADE)
+    IsPerformer = models.BooleanField(default=False)
+    StageName = models.CharField(max_length=128, unique=True, blank=True)
+    Genre = models.CharField(max_length=128, blank=True)
     ProfilePicture = models.ImageField(upload_to='./media/profile_images', blank=True)
 
     def __str__(self):
-        return self.StageName
+        if self.IsPerformer:
+            return self.StageName
+        else:
+            return self.UserField.username
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if not hasattr(self, 'Attendees'):
+            Attendees.objects.create(Attendee=self)
 
 class Venue(models.Model):
     VenueName = models.CharField(max_length=128, unique=True)
@@ -22,17 +31,29 @@ class Gig(models.Model):
     GigName = models.CharField(max_length=128, default="Default Name", unique=True)
     Date = models.DateField()
     Time = models.TimeField()
-    PerformersStageNames = models.ManyToManyField(Performer)
     GigPicture = models.ImageField(upload_to='./media/gig_images', blank=True)
     Venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.GigName
 
-class Attendee(models.Model):
-    User = models.OneToOneField(User, on_delete=models.CASCADE)
-    Gigs = models.ManyToManyField(Gig)
-    ProfilePicture = models.ImageField(upload_to='./media/profile_images', blank=True)
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if not hasattr(self, 'Performer'):
+            Performer.objects.create(PerformerGig=self)
+
+class Attendees(models.Model):
+    Attendee = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    Gigs = models.ManyToManyField(Gig, blank=True)
 
     def __str__(self):
-        return self.User.username
+        return str(self.Attendee)
+
+class Performer(models.Model):
+    PerformerGig = models.OneToOneField(Gig, on_delete=models.CASCADE, default="Defualt Gig")
+    Performers = models.ManyToManyField(UserProfile, blank=True, limit_choices_to={'IsPerformer': True})
+
+    def __str__(self):
+        return str(self.PerformerGig)
+
+    

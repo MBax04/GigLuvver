@@ -1,7 +1,8 @@
 from django.contrib import admin
-from gigluvver_app.models import Gig, Attendee, Performer, Venue
+from gigluvver_app.models import UserProfile, Gig, Attendees, Performer, Venue
 
+admin.site.register(UserProfile)
 admin.site.register(Gig)
-admin.site.register(Attendee)
-admin.site.register(Performer)
 admin.site.register(Venue)
+admin.site.register(Attendees)
+admin.site.register(Performer)

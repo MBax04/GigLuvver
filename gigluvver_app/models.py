@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 class UserProfile(models.Model):
     UserField = models.OneToOneField(User, on_delete=models.CASCADE)
     IsPerformer = models.BooleanField(default=False)
-    StageName = models.CharField(max_length=128, unique=True, blank=True)
+    StageName = models.CharField(max_length=128, unique=True, blank=True, null=True)
     Genre = models.CharField(max_length=128, blank=True)
     ProfilePicture = models.ImageField(upload_to='./media/profile_images', blank=True)
 
@@ -17,7 +17,7 @@ class UserProfile(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if not hasattr(self, 'Attendees'):
-            Attendees.objects.create(Attendee=self)
+            Attendees.objects.get_or_create(Attendee=self)
 
 class Venue(models.Model):
     VenueName = models.CharField(max_length=128, unique=True)
@@ -40,7 +40,7 @@ class Gig(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if not hasattr(self, 'Performer'):
-            Performer.objects.create(PerformerGig=self)
+            Performer.objects.get_or_create(PerformerGig=self)
 
 class Attendees(models.Model):
     Attendee = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
@@ -50,7 +50,7 @@ class Attendees(models.Model):
         return str(self.Attendee)
 
 class Performer(models.Model):
-    PerformerGig = models.OneToOneField(Gig, on_delete=models.CASCADE, default="Defualt Gig")
+    PerformerGig = models.OneToOneField(Gig, on_delete=models.CASCADE)
     Performers = models.ManyToManyField(UserProfile, blank=True, limit_choices_to={'IsPerformer': True})
 
     def __str__(self):

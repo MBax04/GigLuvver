@@ -3,7 +3,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'GigLuvver.settings')
 
 import django
 django.setup()
-from gigluvver_app.models import Performer, Venue, Gig, Attendee
+from gigluvver_app.models import Performer, Venue, Gig, Attendees
 from django.contrib.auth.models import User
 from django.core.files import File
 from datetime import datetime, time

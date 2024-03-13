@@ -110,7 +110,7 @@ def artist_log_in(request):
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
         if user:
-            if user.is_active:
+            if user.is_authenticated:
                 login(request, user)
                 return redirect(reverse('gigluvver_app:home'))
             else:

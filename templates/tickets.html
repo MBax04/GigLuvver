@@ -6,6 +6,12 @@ GigLuvver - Tickets
 {% endblock %}
 
 {% block body_block %}
-<a href="{% url 'gigluvver_app:gig' %}">Test Gig</a>
+    {% for gig in gigs %}
+    <li data-venue="{{ gig.Venue.id }}">
+        <a href="{% url 'gigluvver_app:gig' gig.GigID %}">{{ gig.GigName }}</a>
+    </li>
+    {% empty %}
+    <strong>There are no gigs present.</strong>
+    {% endfor %}
     <!-- list of selected gigs with urls. -->
 {% endblock %}

@@ -6,7 +6,18 @@ GigLuvver - Gigs
 {% endblock %}
 
 {% block body_block %}
-    <a href="{% url 'gigluvver_app:gig' %}">Test Gig</a>
+    <h1>Gigs</h1>
+    {% if gigs %}
+    <ul>
+        {% for gig in gigs %}
+            <li>
+                <a href="{% url 'gigluvver_app:gig' gig.GigID %}">{{ gig.GigName }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <strong>There are no gigs present.</strong>
+    {% endif %}
     <!-- search bar to search for new gigs.
     List of popular upcoming gigs with urls for gig pages -->
 {% endblock %}

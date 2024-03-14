@@ -4,9 +4,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from gigluvver_app.forms import UserForm, ArtistProfileForm
 from django.contrib.auth.decorators import login_required
-from gigluvver_app.models import Gig
-
-
+from gigluvver_app.models import Gig, Performer, Venue, UserProfile
 
 def home(request):
 
@@ -142,11 +140,31 @@ def artist_profile(request):
     return response
 
 def gigs(request):
-    response = render(request, 'gigs.html')
+    context_dict = {}
+
+    gig_list = Gig.objects.all()
+    context_dict['gigs'] = gig_list
+    venue_list = Venue.objects.all()
+    context_dict['venues'] = venue_list
+    performer_list = UserProfile.objects.filter(IsPerformer=True)
+    context_dict['performers'] = performer_list
+    genre_list = UserProfile.objects.values_list('Genre', flat=True).distinct()
+    genre_list = list(filter(lambda x: x != '', genre_list))
+    context_dict['genres'] = genre_list
+
+    response = render(request, 'gigs.html', context=context_dict)
     return response
 
-def gig(request):
-    response = render(request, 'gig.html')
+def gig(request, gig_id):
+    context_dict = {}
+
+    gig = Gig.objects.get(GigID=gig_id)
+    context_dict['gig'] = gig
+    performer = Performer.objects.get(PerformerGig=gig)
+    performer_list = performer.Performers.all()
+    context_dict['performers'] = performer_list
+    
+    response = render(request, 'gig.html', context=context_dict)
     return response
 
 def map(request):

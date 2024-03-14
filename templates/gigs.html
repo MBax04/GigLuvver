@@ -6,19 +6,67 @@ GigLuvver - Gigs
 {% endblock %}
 
 {% block body_block %}
-    <h1>Gigs</h1>
-    {% if gigs %}
-    <ul>
-        {% for gig in gigs %}
-            <li>
-                <a href="{% url 'gigluvver_app:gig' gig.GigID %}">{{ gig.GigName }}</a>
-            </li>
-        {% endfor %}
-    </ul>
-    {% else %}
-        <strong>There are no gigs present.</strong>
-    {% endif %}
-    <!-- search bar to search for new gigs.
-    List of popular upcoming gigs with urls for gig pages -->
-{% endblock %}
+<h1>Gigs</h1>
 
+<select id="venue-select">
+    <option value="">All Venues</option>
+    {% for venue in venues %}
+        <option value="{{ venue.id }}">{{ venue.VenueName }}</option>
+    {% endfor %}
+</select>
+
+<select id="peformer-select">
+    <option value="">All Performers</option>
+    {% for performer in performers %}
+        <option value="{{ performer.id }}">{{ performer.StageName }}</option>
+    {% endfor %}
+</select>
+
+<select id="genre-select">
+    <option value="">All Genres</option>
+    {% for genre in genres %}
+        <option value="{{ genre.id }}">{{ genre }}</option>
+    {% endfor %}
+</select>
+
+
+<ul id="gig-list">
+    {% for gig in gigs %}
+    <li data-venue="{{ gig.Venue.id }}">
+        <a href="{% url 'gigluvver_app:gig' gig.GigID %}">{{ gig.GigName }}</a>
+    </li>
+    {% empty %}
+    <strong>There are no gigs present.</strong>
+    {% endfor %}
+</ul>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var venueSelect = document.getElementById("venue-select");
+    var performerSelect = document.getElementById("performer-select");
+    var genreSelect = document.getElementById("genre-select");
+    var gigList = document.getElementById("gig-list");
+    var gigs = gigList.getElementsByTagName("li");
+
+    venueSelect.addEventListener("change", filterGigs);
+    performerSelect.addEventListener("change", filterGigs);
+    genreSelect.addEventListener("change", filterGigs);
+    
+    function filterGigs() {
+        var selectedVenueId = venueSelect.value;
+        
+        for (var i = 0; i < gigs.length; i++) {
+            var gigVenueId = gigs[i].getAttribute("data-venue");
+            var selectedPerformerId = gigs[i].getAttribute("data-performers");
+            var selectedGenreId = gigs[i].getAttribute("genre-performers");
+            
+            if (selectedVenueId === "" || gigVenueId === selectedVenueId) {
+                gigs[i].style.display = "block";
+            } else {
+                gigs[i].style.display = "none";
+            }
+        }
+    };
+});
+</script>
+{% endblock %}

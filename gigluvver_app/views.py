@@ -42,7 +42,11 @@ def log_out(request):
 
 @login_required
 def my_tickets(request):
-    response = render(request, 'tickets.html')
+    context_dict = {}
+
+    gig_list = Gig.objects.all()
+    context_dict['gigs'] = gig_list
+    response = render(request, 'tickets.html', context=context_dict)
     return response
 
 @login_required
@@ -131,7 +135,11 @@ def artist_log_in(request):
 
 @login_required
 def my_gigs(request):
-    response = render(request, 'my_gigs.html')
+    context_dict = {}
+
+    gig_list = Gig.objects.all()
+    context_dict['gigs'] = gig_list
+    response = render(request, 'my_gigs.html', context=context_dict)
     return response
 
 @login_required

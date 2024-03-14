@@ -7,7 +7,13 @@ from django.contrib.auth.decorators import login_required
 from gigluvver_app.models import Gig, Performer, Venue, UserProfile
 
 def home(request):
-    response = render(request, 'home.html')
+
+    gig_list = Gig.objects.order_by('Date')[:10]
+
+    context_dict = {}
+    context_dict['gigs'] = gig_list
+
+    response = render(request, 'home.html', context_dict)
     return response
 
 def log_in(request):

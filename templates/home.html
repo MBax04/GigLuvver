@@ -6,5 +6,15 @@
 {% endblock %}
 
 {% block body_block %}
-    <!-- list of popular gigs in the area -->
+    <div>
+        {% if gigs %}
+            <ul>
+                {% for gig in gigs %}
+                    <li>{{ gig.GigName }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <strong>There are no upcoming gigs.</strong>
+        {% endif %}
+    </div>
 {% endblock %}

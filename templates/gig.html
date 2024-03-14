@@ -2,18 +2,36 @@
 {% load staticfiles %}
 
 {% block title_block %}
-GigLuvver - Gig
+GigLuvver - {{ gig.GigName }}
 {% endblock %}
 
 {% block body_block %}
+    <h1>{{ gig.GigName }}</h1>
 
-    <h1>Test gig 1</h1></br>
+    <h2>Performers</h2>
+    {% if performers %}
+    <ul>
+        {% for performer in performers %}
+            <li>
+                {{ performer.StageName }}</br>
+                {{ performer.Genre }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <strong>There are no performers present.</strong>
+    {% endif %}
 
-    09/03/2024</br>
-
-    The hydro</br>
-
-    People going: 1000</br>
-
+    <img src="{{ BASE_DIR }}/{{ gig.GigPicture }}" alt="Gig Picture" />
+    
+    <h2>Details</h2>
+    {{ BASE_DIR }}
+    <ul>
+        <li>Date: {{ gig.Date }}</br></li>
+        <li>Time: {{ gig.Time }}</br></li>
+        <li>Venue: {{ gig.Venue }}</br></li>
+    </ul>
     <!-- map api -->
+
+    <a href="{% url 'gigluvver_app:gigs' %}">Back</a>
 {% endblock %}

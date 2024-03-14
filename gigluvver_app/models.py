@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
-    UserField = models.OneToOneField(User, on_delete=models.CASCADE)
+    UserField = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     IsPerformer = models.BooleanField(default=False)
     StageName = models.CharField(max_length=128, unique=True, blank=True, null=True)
     Genre = models.CharField(max_length=128, blank=True)

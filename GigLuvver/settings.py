@@ -84,6 +84,7 @@ DATABASES = {
     }
 }
 
+AUTH_PROFILE_MODULE = 'gigluvver_app.UserProfile'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

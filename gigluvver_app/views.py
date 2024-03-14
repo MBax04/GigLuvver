@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from gigluvver_app.forms import UserForm, ArtistProfileForm
 from django.contrib.auth.decorators import login_required
+from gigluvver_app.models import UserProfile
+from django.contrib.auth.models import User
 
 def home(request):
     response = render(request, 'home.html')
@@ -112,7 +114,10 @@ def artist_log_in(request):
         if user:
             if user.is_authenticated:
                 login(request, user)
+                #profile = user.get_profile()
                 return redirect(reverse('gigluvver_app:home'))
+                #else:
+                #    return HttpResponse("Your account is not an artist account. Try signing in as a user.")
             else:
                 return HttpResponse("Your account is disabled.")
         else:

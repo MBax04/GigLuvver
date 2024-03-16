@@ -84,8 +84,11 @@
                 <li><a href="{% url 'gigluvver_app:home' %}">HomePage</a></li>
                 <li><a href="{% url 'gigluvver_app:gigs' %}">Gigs</a></li>
                 {% if user.is_authenticated %}
-                <li><a href="{% url 'gigluvver_app:user_profile' %}">Profile</a></li>
-                <li><a href="{% url 'gigluvver_app:artist_profile' %}">Artist Profile</a></li>
+                    {% if profile.IsPerformer %}
+                        <li><a href="{% url 'gigluvver_app:artist_profile' %}">Artist Profile</a></li>
+                    {% else %}
+                        <li><a href="{% url 'gigluvver_app:user_profile' %}">Profile</a></li>
+                    {% endif %}
                 {% endif %}
                 <!-- Add more links as needed -->
             </ul>

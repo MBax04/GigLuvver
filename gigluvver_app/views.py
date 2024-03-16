@@ -8,7 +8,7 @@ from gigluvver_app.models import UserProfile
 from django.contrib.auth.models import User
 
 def home(request):
-    response = render(request, 'home.html')
+    response = render(request, 'home.html', context={'profile':get_profile(request)})
     return response
 
 def log_in(request):
@@ -27,7 +27,7 @@ def log_in(request):
             print(f"Invalid login details: {username}, {password}")
             return HttpResponse("Invalid login details supplied.")
     else:
-        response = render(request, 'user_login.html')
+        response = render(request, 'user_login.html', context={'profile':get_profile(request)})
         return response
 
 @login_required
@@ -37,12 +37,12 @@ def log_out(request):
 
 @login_required
 def my_tickets(request):
-    response = render(request, 'tickets.html')
+    response = render(request, 'tickets.html', context={'profile':get_profile(request)})
     return response
 
 @login_required
 def user_profile(request):
-    response = render(request, 'account.html')
+    response = render(request, 'account.html', context={'profile':get_profile(request)})
     return response
 
 def create_account(request):
@@ -77,7 +77,8 @@ def create_user_account(request):
     response = render(request, 'create_user_account.html',
                       context = {'user_form': user_form,
                                  'profile_form': profile_form,
-                                 'registered': registered})
+                                 'registered': registered,
+                                 'profile':get_profile(request)})
     return response
 
 def create_artist_account(request):
@@ -113,7 +114,8 @@ def create_artist_account(request):
     response = render(request, 'create_artist_account.html',
                       context = {'user_form': user_form,
                                  'profile_form': profile_form,
-                                 'registered': registered})
+                                 'registered': registered,
+                                 'profile':get_profile(request)})
     return response
 
 def artist_log_in(request):
@@ -135,34 +137,40 @@ def artist_log_in(request):
             print(f"Invalid login details: {username}, {password}")
             return HttpResponse("Invalid login details supplied.")
     else:
-        response = render(request, 'artist_login.html')
+        response = render(request, 'artist_login.html', context={'profile':get_profile(request)})
         return response
 
 @login_required
 def my_gigs(request):
-    response = render(request, 'my_gigs.html')
+    response = render(request, 'my_gigs.html', context={'profile':get_profile(request)})
     return response
 
 @login_required
 def artist_profile(request):
-    response = render(request, 'artistAccount.html')
+    response = render(request, 'artistAccount.html', context={'profile':get_profile(request)})
     return response
 
 def gigs(request):
-    response = render(request, 'gigs.html')
+    response = render(request, 'gigs.html', context={'profile':get_profile(request)})
     return response
 
 def gig(request):
-    response = render(request, 'gig.html')
+    response = render(request, 'gig.html', context={'profile':get_profile(request)})
     return response
 
 def map(request):
     return HttpResponse("The map page works")
 
 def change_profile_picture(request):
-    response = render(request, 'change_profile_picture.html')
+    response = render(request, 'change_profile_picture.html', context={'profile':get_profile(request)})
     return response
 
 def create_gig(request):
-    response = render(request, 'create_gig.html')
+    response = render(request, 'create_gig.html', context={'profile':get_profile(request)})
     return response
+
+def get_profile(request):
+    if request.user.is_authenticated:
+        return UserProfile.objects.get(UserField=request.user)
+    else:
+        return None

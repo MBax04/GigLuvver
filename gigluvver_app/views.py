@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
-from gigluvver_app.forms import UserForm, ArtistProfileForm
+from gigluvver_app.forms import UserForm, ArtistProfileForm, UserProfileForm
 from django.contrib.auth.decorators import login_required
 from gigluvver_app.models import UserProfile
 from django.contrib.auth.models import User
@@ -53,21 +53,31 @@ def create_user_account(request):
 
     if request.method == 'POST':
         user_form = UserForm(request.POST)
+        profile_form = UserProfileForm(request.POST)
 
         if user_form.is_valid():
             user = user_form.save()
-            
+
             user.set_password(user.password)
             user.save()
+            if profile_form.is_valid():
+                user_profile = profile_form.save(commit=False)
+                user_profile.UserField = user
+                user_profile.save()
 
-            registered = True
+                registered = True
+            else:
+                print(profile_form.errors)
         else:
             print(user_form.errors)
     else:
         user_form = UserForm()
-
+        profile_form = UserProfileForm()
+        
     response = render(request, 'create_user_account.html',
-                      context = {'user_form': user_form, 'registered': registered})
+                      context = {'user_form': user_form,
+                                 'profile_form': profile_form,
+                                 'registered': registered})
     return response
 
 def create_artist_account(request):
@@ -77,24 +87,25 @@ def create_artist_account(request):
         user_form = UserForm(request.POST)
         profile_form = ArtistProfileForm(request.POST)
 
-        if user_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid():
             user = user_form.save()
-            
+
             user.set_password(user.password)
             user.save()
+            if profile_form.is_valid():
+                user_profile = profile_form.save(commit=False)
+                user_profile.IsPerformer = True
+                if 'picture' in request.FILES:
+                    user_profile.picture = request.FILES['picture']
+                user_profile.UserField = user
 
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.is_artist = True
+                user_profile.save()
 
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
-
-            profile.save()
-
-            registered = True
+                registered = True
+            else:
+                print(profile_form.errors)
         else:
-            print(user_form.errors, profile_form.errors)
+            print(user_form.errors)
     else:
         user_form = UserForm()
         profile_form = ArtistProfileForm()

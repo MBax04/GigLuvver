@@ -12,4 +12,9 @@ class UserForm(forms.ModelForm):
 class ArtistProfileForm(forms.ModelForm):
 	class Meta:
 		model = UserProfile
-		fields = ('StageName', 'Genre', 'ProfilePicture')
+		fields = ('StageName', 'Genre', 'ProfilePicture','IsPerformer')
+
+class UserProfileForm(forms.ModelForm):
+	class Meta:
+		model = UserProfile
+		fields = ()

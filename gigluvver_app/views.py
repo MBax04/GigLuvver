@@ -4,11 +4,17 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from gigluvver_app.forms import UserForm, ArtistProfileForm, UserProfileForm
 from django.contrib.auth.decorators import login_required
-from gigluvver_app.models import UserProfile
-from django.contrib.auth.models import User
+from gigluvver_app.models import Gig, Performer, Venue, UserProfile
 
 def home(request):
-    response = render(request, 'home.html', context={'profile':get_profile(request)})
+
+    gig_list = Gig.objects.order_by('Date')[:10]
+
+    context_dict = {}
+    context_dict['gigs'] = gig_list
+    context_dict['profile'] = get_profile(request)
+
+    response = render(request, 'home.html', context_dict)
     return response
 
 def log_in(request):
@@ -37,7 +43,12 @@ def log_out(request):
 
 @login_required
 def my_tickets(request):
-    response = render(request, 'tickets.html', context={'profile':get_profile(request)})
+    context_dict = {}
+
+    gig_list = Gig.objects.all()
+    context_dict['gigs'] = gig_list
+    context_dict['profile'] = get_profile(request)
+    response = render(request, 'tickets.html', context=context_dict)
     return response
 
 @login_required
@@ -142,7 +153,13 @@ def artist_log_in(request):
 
 @login_required
 def my_gigs(request):
-    response = render(request, 'my_gigs.html', context={'profile':get_profile(request)})
+    context_dict = {}
+
+    context_dict['profile'] = get_profile(request)
+
+    gig_list = Gig.objects.all()
+    context_dict['gigs'] = gig_list
+    response = render(request, 'my_gigs.html', context=context_dict)
     return response
 
 @login_required
@@ -151,11 +168,33 @@ def artist_profile(request):
     return response
 
 def gigs(request):
-    response = render(request, 'gigs.html', context={'profile':get_profile(request)})
+    context_dict = {}
+
+    gig_list = Gig.objects.all()
+    context_dict['gigs'] = gig_list
+    venue_list = Venue.objects.all()
+    context_dict['venues'] = venue_list
+    performer_list = UserProfile.objects.filter(IsPerformer=True)
+    context_dict['performers'] = performer_list
+    genre_list = UserProfile.objects.values_list('Genre', flat=True).distinct()
+    genre_list = list(filter(lambda x: x != '', genre_list))
+    context_dict['genres'] = genre_list
+    context_dict['profile'] = get_profile(request)
+
+    response = render(request, 'gigs.html', context=context_dict)
     return response
 
-def gig(request):
-    response = render(request, 'gig.html', context={'profile':get_profile(request)})
+def gig(request, gig_id):
+    context_dict = {}
+
+    gig = Gig.objects.get(GigID=gig_id)
+    context_dict['gig'] = gig
+    performer = Performer.objects.get(PerformerGig=gig)
+    performer_list = performer.Performers.all()
+    context_dict['performers'] = performer_list
+    context_dict['profile'] = get_profile(request)
+    
+    response = render(request, 'gig.html', context=context_dict)
     return response
 
 def map(request):

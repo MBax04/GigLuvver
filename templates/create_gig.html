@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block body_block %}
+    {% if profile.IsPerformer %}
     <form method="post" action="{% url 'gigluvver_app:create_gig' %}">
         {% csrf_token %}
         
@@ -27,4 +28,7 @@
 
         <input type="submit" value="Create Gig">
     </form>
+    {% else %}
+    <p>Not logged in as an artist.</p>
+    {% endif %}{% endif %}
 {% endblock %}

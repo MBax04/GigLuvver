@@ -209,7 +209,10 @@ def create_gig(request):
     return response
 
 def get_profile(request):
-    if request.user.is_authenticated:
-        return UserProfile.objects.get(UserField=request.user)
-    else:
+    try:
+        if request.user.is_authenticated:
+            return UserProfile.objects.get(UserField=request.user)
+        else:
+            return None
+    except UserProfile.DoesNotExist:
         return None

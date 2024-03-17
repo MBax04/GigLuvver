@@ -42,13 +42,18 @@ def log_out(request):
 
 @login_required
 def my_tickets(request):
-    response = render(request, 'tickets.html')
+    context_dict = {}
+
+    gig_list = Gig.objects.all()
+    context_dict['gigs'] = gig_list
+    response = render(request, 'tickets.html', context=context_dict)
     return response
 
 @login_required
 def user_profile(request):
-    response = render(request, 'account.html')
-    return response
+    user_profile = UserProfile.objects.get(UserField=request.user)
+    context = {'profile_picture': user_profile.ProfilePicture}
+    return render(request, 'account.html', context)
 
 def create_account(request):
     return HttpResponse("The create_account page works")
@@ -131,13 +136,18 @@ def artist_log_in(request):
 
 @login_required
 def my_gigs(request):
-    response = render(request, 'my_gigs.html')
+    context_dict = {}
+
+    gig_list = Gig.objects.all()
+    context_dict['gigs'] = gig_list
+    response = render(request, 'my_gigs.html', context=context_dict)
     return response
 
 @login_required
 def artist_profile(request):
-    response = render(request, 'artistAccount.html')
-    return response
+    user_profile = UserProfile.objects.get(UserField=request.user)
+    context = {'profile_picture': user_profile.ProfilePicture}
+    return render(request, 'account.html', context)
 
 def gigs(request):
     context_dict = {}
@@ -171,8 +181,19 @@ def map(request):
     return HttpResponse("The map page works")
 
 def change_profile_picture(request):
-    response = render(request, 'change_profile_picture.html')
+    if request.method == 'POST':
+        profile_picture = request.FILES.get('profile_picture')
+        if profile_picture:
+            user_profile = UserProfile.objects.get(UserField=request.user)
+            user_profile.ProfilePicture = profile_picture
+            user_profile.save()
+            return redirect('gigluvver_app:success_page')
+    return render(request, 'change_profile_picture.html')
+
+def success_page(request):
+    response = render(request, 'success_page.html')
     return response
+
 
 def create_gig(request):
     response = render(request, 'create_gig.html')

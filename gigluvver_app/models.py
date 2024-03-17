@@ -6,7 +6,7 @@ class UserProfile(models.Model):
     IsPerformer = models.BooleanField(default=False)
     StageName = models.CharField(max_length=128, unique=True, blank=True, null=True)
     Genre = models.CharField(max_length=128, blank=True)
-    ProfilePicture = models.ImageField(upload_to='./media/profile_images', blank=True)
+    ProfilePicture = models.ImageField(upload_to='profile_images/', blank=True)
 
     def __str__(self):
         if self.IsPerformer:
@@ -18,6 +18,11 @@ class UserProfile(models.Model):
         super().save(*args, **kwargs)
         if not hasattr(self, 'Attendees'):
             Attendees.objects.get_or_create(Attendee=self)
+
+    def delete(self, *args, **kwargs):
+        if self.ProfilePicture:
+            self.ProfilePicture.delete()
+        super().delete(*args, **kwargs)
 
 class Venue(models.Model):
     VenueName = models.CharField(max_length=128, unique=True)

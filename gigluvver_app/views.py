@@ -182,6 +182,7 @@ def gig(request, gig_id):
     performer = Performer.objects.get(PerformerGig=gig)
     performer_list = performer.Performers.all()
     context_dict['performers'] = performer_list
+    context_dict['gig_picture'] = gig.GigPicture
     
     response = render(request, 'gig.html', context=context_dict)
     return response

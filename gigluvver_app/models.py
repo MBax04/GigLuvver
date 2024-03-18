@@ -36,7 +36,7 @@ class Gig(models.Model):
     GigName = models.CharField(max_length=128, default="Default Name", unique=True)
     Date = models.DateField()
     Time = models.TimeField()
-    GigPicture = models.ImageField(upload_to='./media/gig_images', blank=True)
+    GigPicture = models.ImageField(upload_to='gig_images/', blank=True)
     Venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
 
     def __str__(self):

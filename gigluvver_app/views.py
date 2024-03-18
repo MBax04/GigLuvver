@@ -172,7 +172,7 @@ def artist_profile(request):
     user_profile = get_profile(request)
     context = {'profile_picture': user_profile.ProfilePicture,
                'profile':user_profile}
-    return render(request, 'account.html', context)
+    return render(request, 'artistAccount.html', context)
 
 def gigs(request):
     context_dict = {}

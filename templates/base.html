@@ -63,7 +63,13 @@
 <body> 
     <div id="topbar">
         <h1>{% block title_block %}Gig Luvver{% endblock %}</h1>
-        <p>Welcome{% if user.is_authenticated %} {{ user.username }}{% endif %}!</p>
+        <p>Welcome{% if user.is_authenticated %} 
+                    {% if profile.IsPerformer %}
+                        {{ profile.StageName }}
+                    {% else %}
+                        {{ user.username }}
+                    {% endif %}
+                  {% endif %}!</p>
 
         <div id="topbar-buttons">
             {% if user.is_authenticated %}

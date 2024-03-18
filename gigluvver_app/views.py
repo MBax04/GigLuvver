@@ -172,7 +172,7 @@ def artist_profile(request):
     user_profile = get_profile(request)
     context = {'profile_picture': user_profile.ProfilePicture,
                'profile':user_profile}
-    return render(request, 'account.html', context)
+    return render(request, 'artistAccount.html', context)
 
 def gigs(request):
     context_dict = {}
@@ -203,7 +203,7 @@ def gigs(request):
 def gig(request, gig_id):
     context_dict = {}
 
-    gig = Gig.objects.get(GigID=gig_id)
+    gig = Gig.objects.get(id=gig_id)
     context_dict['gig'] = gig
     performer = Performer.objects.get(PerformerGig=gig)
     performer_list = performer.Performers.all()

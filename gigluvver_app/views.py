@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
-from gigluvver_app.forms import UserForm, ArtistProfileForm
+from gigluvver_app.forms import UserForm, ArtistProfileForm, GigForm
 from django.contrib.auth.decorators import login_required
-from gigluvver_app.models import Gig, Performer, Venue, UserProfile
+from gigluvver_app.models import Gig, Performer, Venue, UserProfile, Attendees
 
 def home(request):
 
@@ -147,7 +147,7 @@ def my_gigs(request):
 def artist_profile(request):
     user_profile = UserProfile.objects.get(UserField=request.user)
     context = {'profile_picture': user_profile.ProfilePicture}
-    return render(request, 'account.html', context)
+    return render(request, 'artistAccount.html', context)
 
 def gigs(request):
     context_dict = {}
@@ -196,5 +196,13 @@ def success_page(request):
 
 
 def create_gig(request):
-    response = render(request, 'create_gig.html')
-    return response
+    form = GigForm()
+    if request.method == 'POST':
+        form = GigForm(request.POST)
+
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('/gigluvver_app/')
+        else:
+            print(form.errors)
+    return render(request, 'create_gig.html', {'form': form})

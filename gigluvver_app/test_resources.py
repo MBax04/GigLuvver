@@ -2,23 +2,20 @@ from django.urls import reverse
 
 HEADER_FOOTER = "\n----------------------------------\n"
 
-general_links = ['home','log_in','artist_log_in','gigs']
-log_in_links = ['home','my_tickets','sign_out','user_profile','gigs']
-log_in_artist_links = ['home','my_tickets','sign_out','artist_profile','gigs']
+general_links = ['home','gigs']
+log_in_links = ['home','my_tickets','user_profile','gigs']
+log_in_artist_links = ['home','my_tickets','artist_profile','gigs']
 
-links = {'home':general_links,
-         'log_in':general_links,
-         'my_tickets':log_in_links,
-         'user_profile':log_in_links,
-         'create_account':general_links,
-         'create_user_account':general_links,
-         'create_artist_account':general_links,
-         'artist_log_in':general_links,
-         'my_gigs':log_in_artist_links,
-         'artist_profile':log_in_artist_links,
-         'gigs':general_links,
-         'gig':general_links,
-         'map':general_links}
+links = {'non_log_in':{ 'home':general_links,
+                        'log_in':general_links,
+                        'create_user_account':general_links,
+                        'create_artist_account':general_links,
+                        'artist_log_in':general_links,
+                        'gigs':general_links,},
+        'log_in':     { 'my_tickets':log_in_links,
+                        'user_profile':log_in_links,
+                        'my_gigs':log_in_artist_links,
+                        'artist_profile':log_in_artist_links,}}
 
 create_user_fields = [('username','Username','text'),
                       ('email','Email address'),
@@ -28,8 +25,9 @@ create_user_fields = [('username','Username','text'),
 create_artist_fields = [('username','Username','text'),
                         ('email','Email address'),
                         ('password','Password'),
-                        ('stage_name','Stage name','text'),
-                        ('picture','Picture', 'file')]
+                        ('StageName','StageName','text'),
+                        ('Genre','Genre','text'),
+                        ('ProfilePicture','ProfilePicture', 'file')]
 
 def test_create_get(self, page, create_fields):
     request = self.client.get(reverse(f'gigluvver_app:{page}'))

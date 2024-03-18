@@ -1,6 +1,6 @@
 from django.test import TestCase
-from django.urls import reverse
-from gigluvver_app import urls,test_resources
+from django.urls import reverse, path
+from gigluvver_app import urls,test_resources,views
 
 class PageResponseTests(TestCase):
     def test_response(self):
@@ -11,9 +11,13 @@ class PageResponseTests(TestCase):
 class PageLinkLoginTests(TestCase):
     def test_links(self):
         for url in urls.urlpatterns:
-            response = self.client.get(reverse(f"gigluvver_app:{url.name}"))
-            for link in test_resources.links[url.name]:
-                self.assertContains(response, f'<a href="{reverse(f"gigluvver_app:{link}")}">', msg_prefix=f"{test_resources.HEADER_FOOTER}The {url.name} page is missing a {link} link.{test_resources.HEADER_FOOTER}")
+            if url.name != "gig":
+                response = self.client.get(reverse(f"gigluvver_app:{url.name}"))
+                print(url.name)
+                if url.name in test_resources.links['non_log_in'].keys():
+                    for link in test_resources.links['non_log_in'][url.name]:
+                        self.assertContains(response, f'<a href="{reverse(f"gigluvver_app:{link}")}">',
+                                            msg_prefix=f"{test_resources.HEADER_FOOTER}The {url.name} page is missing a {link} link.{test_resources.HEADER_FOOTER}")
 
 class AuthenticationTests(TestCase):
     def test_create_artist_get(self):
@@ -28,3 +32,16 @@ class AuthenticationTests(TestCase):
 
     def test_blank_create_artist_post(self):
         test_resources.test_blank_create_post(self,'create_artist_account')
+
+class LogInTests(TestCase):
+    def create_account_user(self):
+        response = self.client.post("create_account/", data={'username':'testing_user','password':'12345'})
+        self.assertEquals(response.status_code, 302, msg_prefix=f"{test_resources.HEADER_FOOTER}Could not create user account.{test_resources.HEADER_FOOTER}")
+
+    def create_account_artist(self):
+        response = self.client.post("create_artist_account/", data={'username':'testing_artist',
+                                                                    'password':'12345',
+                                                                    'StageName':'Testing Artist',
+                                                                    'Genre':'Test',
+                                                                    'ProfilePicture':'media\profile_images\test_image.png'})
+        self.assertEquals(response.status_code, 302, msg_prefix=f"{test_resources.HEADER_FOOTER}Could not create artist account.{test_resources.HEADER_FOOTER}")

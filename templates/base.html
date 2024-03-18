@@ -11,6 +11,7 @@
             flex-direction: column;
             margin: 0;
             font-family: Arial, sans-serif;
+            overflow-x: hidden;
         }
 
         #topbar {
@@ -42,6 +43,7 @@
         }
 
         #content {
+            position: relative;
             flex: 1;
             padding: 20px;
         }
@@ -58,10 +60,28 @@
             font-size: 14px;
             cursor: pointer;
         }
+
+        gmb-map {
+            height: 100%;
+        }
+
+        .map {
+            position: absolute;
+            height: calc(100% - 20px);
+            width: calc(50% - 10px);
+            right: 10px;
+            top: 10px;
+        }
+
+        .gig-info {
+            width: 50%;
+        }
     </style>
+    {% block head_block %}
+    {% endblock %}
 </head>
 <body> 
-    <div id="topbar">
+    <div id="topbar" class="fixed">
         <h1>{% block title_block %}Gig Luvver{% endblock %}</h1>
         <p>Welcome{% if user.is_authenticated %} 
                     {% if profile.IsPerformer %}

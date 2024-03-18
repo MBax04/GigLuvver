@@ -6,6 +6,8 @@ GigLuvver - My Artist Account
 {% endblock %}
 
 {% block body_block %}
+    {% if user.is_authenticated %}
+    {% if profile.IsPerformer %}
     <!-- profile info -->
 
     {% if profile_picture %}
@@ -19,5 +21,7 @@ GigLuvver - My Artist Account
 
     <a href="{% url 'gigluvver_app:my_gigs' %}">My Gigs</a><br />
     <a href="{% url 'gigluvver_app:my_tickets' %}">All Tickets</a><br/>
-
+    {% else %}
+    <p>Not logged in as an artist.</p>
+    {% endif %}{% endif %}
 {% endblock %}

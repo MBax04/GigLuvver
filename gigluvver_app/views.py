@@ -4,15 +4,18 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from gigluvver_app.forms import UserForm, ArtistProfileForm, UserProfileForm
 from django.contrib.auth.decorators import login_required
-from gigluvver_app.models import Gig, Performer, Venue, UserProfile
+from gigluvver_app.models import Gig, Performer, Venue, UserProfile, Attendees
+from django.db.models import Count
+
 
 def home(request):
-
-    gig_list = Gig.objects.order_by('Date')[:10]
-
     context_dict = {}
-    context_dict['gigs'] = gig_list
     context_dict['profile'] = get_profile(request)
+
+    upcoming_gigs_list = Gig.objects.order_by('Date')[:5]
+    context_dict['upcoming_gigs'] = upcoming_gigs_list
+    popular_gigs_list = Gig.objects.annotate(num_attendees=Count('attendees')).order_by('-num_attendees')[:5]
+    context_dict['popular_gigs'] = popular_gigs_list
 
     response = render(request, 'home.html', context_dict)
     return response
@@ -53,8 +56,10 @@ def my_tickets(request):
 
 @login_required
 def user_profile(request):
-    response = render(request, 'account.html', context={'profile':get_profile(request)})
-    return response
+    user_profile = get_profile(request)
+    context = {'profile':get_profile(request),
+               'profile_picture':user_profile.ProfilePicture}
+    return render(request, 'account.html', context)
 
 def create_account(request):
     return HttpResponse("The create_account page works")
@@ -164,8 +169,10 @@ def my_gigs(request):
 
 @login_required
 def artist_profile(request):
-    response = render(request, 'artistAccount.html', context={'profile':get_profile(request)})
-    return response
+    user_profile = get_profile(request)
+    context = {'profile_picture': user_profile.ProfilePicture,
+               'profile':user_profile}
+    return render(request, 'account.html', context)
 
 def gigs(request):
     context_dict = {}
@@ -180,6 +187,15 @@ def gigs(request):
     genre_list = list(filter(lambda x: x != '', genre_list))
     context_dict['genres'] = genre_list
     context_dict['profile'] = get_profile(request)
+    gig_performers_list = Performer.objects.all()
+    context_dict['gig_performers'] = gig_performers_list
+
+    context_performers = {}
+    for gig in gig_performers_list:
+        performers = gig.Performers.all()
+        key = 'a' + str(gig.id)
+        context_performers[key] = performers
+    context_dict['context_performers'] = context_performers
 
     response = render(request, 'gigs.html', context=context_dict)
     return response
@@ -193,6 +209,9 @@ def gig(request, gig_id):
     performer_list = performer.Performers.all()
     context_dict['performers'] = performer_list
     context_dict['profile'] = get_profile(request)
+    context_dict['gig_picture'] = gig.GigPicture
+    num_going = Attendees.objects.filter(Gigs=gig).count()
+    context_dict['num_going'] = num_going
     
     response = render(request, 'gig.html', context=context_dict)
     return response
@@ -201,8 +220,20 @@ def map(request):
     return HttpResponse("The map page works")
 
 def change_profile_picture(request):
-    response = render(request, 'change_profile_picture.html', context={'profile':get_profile(request)})
+    context={'profile':get_profile(request)}
+    if request.method == 'POST':
+        profile_picture = request.FILES.get('profile_picture')
+        if profile_picture:
+            user_profile = UserProfile.objects.get(UserField=request.user)
+            user_profile.ProfilePicture = profile_picture
+            user_profile.save()
+            return redirect('gigluvver_app:success_page')
+    return render(request, 'change_profile_picture.html',context=context)
+
+def success_page(request):
+    response = render(request, 'success_page.html')
     return response
+
 
 def create_gig(request):
     response = render(request, 'create_gig.html', context={'profile':get_profile(request)})

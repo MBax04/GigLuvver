@@ -7,14 +7,27 @@
 
 {% block body_block %}
     <div>
-        {% if gigs %}
+        <h1>Upcoming Gigs</h1>
+        {% if upcoming_gigs %}
             <ul>
-                {% for gig in gigs %}
-                    <li>{{ gig.GigName }}</li>
+                {% for gig in upcoming_gigs %}
+                    <li><a href="{% url 'gigluvver_app:gig' gig.GigID %}">{{ gig.GigName }}</a></li>
                 {% endfor %}
             </ul>
         {% else %}
             <strong>There are no upcoming gigs.</strong>
+        {% endif %}
+    </div>
+    <div>
+        <h1>Popular Gigs</h1>
+        {% if upcoming_gigs %}
+            <ul>
+                {% for gig in popular_gigs %}
+                    <li><a href="{% url 'gigluvver_app:gig' gig.GigID %}">{{ gig.GigName }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <strong>There are no popular gigs.</strong>
         {% endif %}
     </div>
 {% endblock %}

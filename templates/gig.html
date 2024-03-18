@@ -22,7 +22,7 @@ GigLuvver - {{ gig.GigName }}
         <strong>There are no performers present.</strong>
     {% endif %}
 
-    <img src="{{ BASE_DIR }}/{{ gig.GigPicture }}" alt="Gig Picture" />
+    <img src="{{ gig_picture.url }}" alt="Gig Picture" style="width: 200px; height: 300px;"/>
     
     <h2>Details</h2>
     {{ BASE_DIR }}
@@ -31,7 +31,7 @@ GigLuvver - {{ gig.GigName }}
         <li>Time: {{ gig.Time }}</br></li>
         <li>Venue: {{ gig.Venue }}</br></li>
     </ul>
+    <p>Number of people going: {{ num_going }}</p>
     <!-- map api -->
 
-    <a href="{% url 'gigluvver_app:gigs' %}">Back</a>
 {% endblock %}

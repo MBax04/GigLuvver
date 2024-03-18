@@ -53,7 +53,7 @@ GigLuvver - Gigs
                                                         {% endwith %}
                                                     {% endwith %}'
                                         data-id="{{ gig.id }}">
-        <a href="{% url 'gigluvver_app:gig' gig.GigID %}">{{ gig.GigName }}</a>
+        <a href="{% url 'gigluvver_app:gig' gig.id %}">{{ gig.GigName }}</a>
     </li>
     {% empty %}
     <strong>There are no gigs present.</strong>

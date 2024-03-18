@@ -161,6 +161,15 @@ def gigs(request):
     genre_list = UserProfile.objects.values_list('Genre', flat=True).distinct()
     genre_list = list(filter(lambda x: x != '', genre_list))
     context_dict['genres'] = genre_list
+    gig_performers_list = Performer.objects.all()
+    context_dict['gig_performers'] = gig_performers_list
+
+    context_performers = {}
+    for gig in gig_performers_list:
+        performers = gig.Performers.all()
+        key = 'a' + str(gig.id)
+        context_performers[key] = performers
+    context_dict['context_performers'] = context_performers
 
     response = render(request, 'gigs.html', context=context_dict)
     return response

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'gigluvver_app',
+    'gigluvver_app.templatetags',
 ]
 
 MIDDLEWARE = [

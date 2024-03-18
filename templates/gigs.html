@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load custom_filters %}
 
 {% block title_block %}
 GigLuvver - Gigs
@@ -15,30 +16,44 @@ GigLuvver - Gigs
     {% endfor %}
 </select>
 
-<select id="peformer-select">
+<select id="performer-select">
     <option value="">All Performers</option>
     {% for performer in performers %}
-        <option value="{{ performer.id }}">{{ performer.StageName }}</option>
+        <option value="{{ performer.StageName }}">{{ performer.StageName }}</option>
     {% endfor %}
 </select>
 
 <select id="genre-select">
     <option value="">All Genres</option>
     {% for genre in genres %}
-        <option value="{{ genre.id }}">{{ genre }}</option>
+        <option value="{{ genre }}">{{ genre }}</option>
     {% endfor %}
 </select>
 
 
 <ul id="gig-list">
     {% for gig in gigs %}
-    <li data-venue="{{ gig.Venue.id }}">
+    <li data-venue="{{ gig.Venue.id }}" data-performers='{% with gig_id=gig.id|stringformat:"d" %}
+                                                            {% with key="a"|add:gig_id|add:"" %}
+                                                                {% for performer in context_performers|get_key:key %}
+                                                                    {{ performer.StageName }},
+                                                                {% endfor %}
+                                                            {% endwith %}
+                                                        {% endwith %}'
+                                        data-genres='{% with gig_id=gig.id|stringformat:"d" %}
+                                                        {% with key="a"|add:gig_id|add:"" %}
+                                                            {% for performer in context_performers|get_key:key %}
+                                                                {{ performer.Genre }},
+                                                            {% endfor %}
+                                                        {% endwith %}
+                                                    {% endwith %}'>
         <a href="{% url 'gigluvver_app:gig' gig.GigID %}">{{ gig.GigName }}</a>
     </li>
     {% empty %}
     <strong>There are no gigs present.</strong>
     {% endfor %}
 </ul>
+
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -54,13 +69,19 @@ document.addEventListener("DOMContentLoaded", function() {
     
     function filterGigs() {
         var selectedVenueId = venueSelect.value;
+        var selectedPerformerId = performerSelect.value;
+        var selectedGenre = genreSelect.value;
         
         for (var i = 0; i < gigs.length; i++) {
             var gigVenueId = gigs[i].getAttribute("data-venue");
-            var selectedPerformerId = gigs[i].getAttribute("data-performers");
-            var selectedGenreId = gigs[i].getAttribute("genre-performers");
+            var gigPerformersIds = gigs[i].getAttribute("data-performers");
+            var gigGenres = gigs[i].getAttribute("data-genres");
+
+            var venueMatch = selectedVenueId === "" || gigVenueId === selectedVenueId;
+            var performerMatch = selectedPerformerId === "" || gigPerformersIds.includes(selectedPerformerId);
+            var genreMatch = selectedGenre === "" || gigGenres.includes(selectedGenre);
             
-            if (selectedVenueId === "" || gigVenueId === selectedVenueId) {
+            if (venueMatch && performerMatch && genreMatch) {
                 gigs[i].style.display = "block";
             } else {
                 gigs[i].style.display = "none";

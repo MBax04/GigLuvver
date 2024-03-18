@@ -60,15 +60,15 @@ def populate():
 
 
     venue_data = [
-        {'name': 'QMU', 'location': '22 University Gardens, Glasgow G12 8QN'},
-        {'name': 'Barrowland Ballroom', 'location': '244 Gallowgate, Glasgow G4 0TT'},
-        {'name': 'Hydro', 'location': 'Exhibition Way, Stobcross Rd, Glasgow G3 8YW'},
-        {'name': 'Bellahouston Park', 'location': '16 Dumbreck Rd, Bellahouston, Glasgow G41 5BW'},
-        {'name': 'King Tuts Wah Wah Hut', 'location': '272A St Vincent St, Glasgow G2 5RL'}
+        {'name': 'QMU', 'location': '22 University Gardens, Glasgow G12 8QN', 'position':'55.8736686706543,-4.291417121887207'},
+        {'name': 'Barrowland Ballroom', 'location': '244 Gallowgate, Glasgow G4 0TT', 'position':'55.8553466796875,-4.23670768737793'},
+        {'name': 'Hydro', 'location': 'Exhibition Way, Stobcross Rd, Glasgow G3 8YW', 'position':'55.8597412109375,-4.285629749298096'},
+        {'name': 'Bellahouston Park', 'location': '16 Dumbreck Rd, Bellahouston, Glasgow G41 5BW', 'position':'55.84640884399414,-4.314202785491943'},
+        {'name': 'King Tuts Wah Wah Hut', 'location': '272A St Vincent St, Glasgow G2 5RL', 'position':'55.86256408691406,-4.265017509460449'}
     ]
 
     for data in venue_data:
-        Venue.objects.get_or_create(VenueName=data['name'], Location=data['location'])
+        Venue.objects.get_or_create(VenueName=data['name'], Location=data['location'], Position=data['position'])
 
     gig_data = [
         {'gig_id': '0001', 'name': 'Queen at the QMU', 'date': datetime(2024, 7, 17), 'time': time(hour=20, minute=0),

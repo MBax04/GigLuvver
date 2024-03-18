@@ -39,19 +39,20 @@ GigLuvver - Gigs
 <ul id="gig-list">
     {% for gig in gigs %}
     <li data-venue="{{ gig.Venue.id }}" data-performers='{% with gig_id=gig.id|stringformat:"d" %}
-                                                            {% with key="a"|add:gig_id|add:"" %}
+                                                            {% with key="a"|add:gig_id %}
                                                                 {% for performer in context_performers|get_key:key %}
                                                                     {{ performer.StageName }},
                                                                 {% endfor %}
                                                             {% endwith %}
                                                         {% endwith %}'
                                         data-genres='{% with gig_id=gig.id|stringformat:"d" %}
-                                                        {% with key="a"|add:gig_id|add:"" %}
+                                                        {% with key="a"|add:gig_id %}
                                                             {% for performer in context_performers|get_key:key %}
                                                                 {{ performer.Genre }},
                                                             {% endfor %}
                                                         {% endwith %}
-                                                    {% endwith %}'>
+                                                    {% endwith %}'
+                                        data-id="{{ gig.id }}">
         <a href="{% url 'gigluvver_app:gig' gig.GigID %}">{{ gig.GigName }}</a>
     </li>
     {% empty %}

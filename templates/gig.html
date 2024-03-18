@@ -31,7 +31,7 @@ GigLuvver - {{ gig.GigName }}
         <li>Time: {{ gig.Time }}</br></li>
         <li>Venue: {{ gig.Venue }}</br></li>
     </ul>
+    <p>Number of people going: {{ num_going }}</p>
     <!-- map api -->
 
-    <a href="{% url 'gigluvver_app:gigs' %}">Back</a>
 {% endblock %}

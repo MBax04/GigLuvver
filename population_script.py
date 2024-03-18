@@ -71,34 +71,34 @@ def populate():
         Venue.objects.get_or_create(VenueName=data['name'], Location=data['location'])
 
     gig_data = [
-        {'gig_id': '0001', 'name': 'Queen at the QMU', 'date': datetime(2024, 7, 17), 'time': time(hour=20, minute=0),
+        {'name': 'Queen at the QMU', 'date': datetime(2024, 7, 17), 'time': time(hour=20, minute=0),
             'venue': Venue.objects.get(VenueName='QMU'), 'gig_picture_path': './media/gig_images/queen_gig.jpg'},
-        {'gig_id': '0002', 'name': 'Muse and Green Day', 'date': datetime(2024, 9, 3), 'time': time(hour=19, minute=30),
+        {'name': 'Muse and Green Day', 'date': datetime(2024, 9, 3), 'time': time(hour=19, minute=30),
             'venue': Venue.objects.get(VenueName='Hydro'), 'gig_picture_path': './media/gig_images/green_day_gig.png'},
-        {'gig_id': '0003', 'name': 'Will of the People World Tour', 'date': datetime(2024, 4, 27), 'time': time(hour=16, minute=45),
+        {'name': 'Will of the People World Tour', 'date': datetime(2024, 4, 27), 'time': time(hour=16, minute=45),
             'venue': Venue.objects.get(VenueName='Bellahouston Park'), 'gig_picture_path': './media/gig_images/will_of_the_people.jpg'},
-        {'gig_id': '0004', 'name': 'Rock Show', 'date': datetime(2024, 2, 12), 'time': time(hour=21, minute=0),
+        {'name': 'Rock Show', 'date': datetime(2024, 2, 12), 'time': time(hour=21, minute=0),
             'venue': Venue.objects.get(VenueName='Barrowland Ballroom'), 'gig_picture_path': './media/gig_images/rock_show.jfif'},
-        {'gig_id': '0005', 'name': 'Eras Tour', 'date': datetime(2024, 8, 28), 'time': time(hour=22, minute=0),
+        {'name': 'Eras Tour', 'date': datetime(2024, 8, 28), 'time': time(hour=22, minute=0),
             'venue': Venue.objects.get(VenueName='Hydro'), 'gig_picture_path': './media/gig_images/eras_tour.jfif'},
-        {'gig_id': '0006', 'name': 'Metallica', 'date': datetime(2024, 4, 11), 'time': time(hour=20, minute=0),
+        {'name': 'Metallica', 'date': datetime(2024, 4, 11), 'time': time(hour=20, minute=0),
             'venue': Venue.objects.get(VenueName='King Tuts Wah Wah Hut'), 'gig_picture_path': './media/gig_images/metallica_show.jfif'},
-        {'gig_id': '0007', 'name': 'Iron Maiden', 'date': datetime(2024, 11, 22), 'time': time(hour=19, minute=0),
+        {'name': 'Iron Maiden', 'date': datetime(2024, 11, 22), 'time': time(hour=19, minute=0),
             'venue': Venue.objects.get(VenueName='QMU'), 'gig_picture_path': './media/gig_images/iron_maiden_show.jfif'},
-        {'gig_id': '0008', 'name': 'Metal Show', 'date': datetime(2024, 10, 9), 'time': time(hour=23, minute=0),
+        {'name': 'Metal Show', 'date': datetime(2024, 10, 9), 'time': time(hour=23, minute=0),
             'venue': Venue.objects.get(VenueName='Bellahouston Park'), 'gig_picture_path': './media/gig_images/metal_show.jfif'},
-        {'gig_id': '0009', 'name': 'The Killers', 'date': datetime(2024, 4, 12), 'time': time(hour=20, minute=0),
+        {'name': 'The Killers', 'date': datetime(2024, 4, 12), 'time': time(hour=20, minute=0),
             'venue': Venue.objects.get(VenueName='King Tuts Wah Wah Hut'), 'gig_picture_path': './media/gig_images/the_killers_show.jfif'},
-        {'gig_id': '0010', 'name': 'The Strokes', 'date': datetime(2024, 12, 22), 'time': time(hour=19, minute=0),
+        {'name': 'The Strokes', 'date': datetime(2024, 12, 22), 'time': time(hour=19, minute=0),
             'venue': Venue.objects.get(VenueName='QMU'), 'gig_picture_path': './media/gig_images/the_strokes_show.jfif'},
-        {'gig_id': '0011', 'name': 'Indie Show', 'date': datetime(2024, 1, 9), 'time': time(hour=23, minute=0),
+        {'name': 'Indie Show', 'date': datetime(2024, 1, 9), 'time': time(hour=23, minute=0),
             'venue': Venue.objects.get(VenueName='Barrowland Ballroom'), 'gig_picture_path': './media/gig_images/indie_show.jfif'},
-        {'gig_id': '0012', 'name': 'Justin Bieber', 'date': datetime(2025, 2, 14), 'time': time(hour=22, minute=30),
+        {'name': 'Justin Bieber', 'date': datetime(2025, 2, 14), 'time': time(hour=22, minute=30),
             'venue': Venue.objects.get(VenueName='Bellahouston Park'), 'gig_picture_path': './media/gig_images/justin_bieber_show.jfif'},
     ]
 
     for data in gig_data:
-        gig, created = Gig.objects.get_or_create(GigID=data['gig_id'], GigName=data['name'], Date=data['date'], Time=data['time'], Venue=data['venue'])
+        gig, created = Gig.objects.get_or_create(GigName=data['name'], Date=data['date'], Time=data['time'], Venue=data['venue'])
         if created:
             gig_picture_path = data['gig_picture_path']
             with open(gig_picture_path, 'rb') as f:

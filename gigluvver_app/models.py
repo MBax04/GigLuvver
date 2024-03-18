@@ -32,7 +32,6 @@ class Venue(models.Model):
         return self.VenueName
 
 class Gig(models.Model):
-    GigID = models.CharField(max_length=128, unique=True)
     GigName = models.CharField(max_length=128, default="Default Name", unique=True)
     Date = models.DateField()
     Time = models.TimeField()

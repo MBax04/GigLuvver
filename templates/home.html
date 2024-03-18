@@ -11,7 +11,7 @@
         {% if upcoming_gigs %}
             <ul>
                 {% for gig in upcoming_gigs %}
-                    <li><a href="{% url 'gigluvver_app:gig' gig.GigID %}">{{ gig.GigName }}</a></li>
+                    <li><a href="{% url 'gigluvver_app:gig' gig.id %}">{{ gig.GigName }}</a></li>
                 {% endfor %}
             </ul>
         {% else %}
@@ -23,7 +23,7 @@
         {% if upcoming_gigs %}
             <ul>
                 {% for gig in popular_gigs %}
-                    <li><a href="{% url 'gigluvver_app:gig' gig.GigID %}">{{ gig.GigName }}</a></li>
+                    <li><a href="{% url 'gigluvver_app:gig' gig.id %}">{{ gig.GigName }}</a></li>
                 {% endfor %}
             </ul>
         {% else %}

@@ -10,7 +10,7 @@ GigLuvver - My Gigs
 <a href="{% url 'gigluvver_app:create_gig' %}">Create new gig</a><br />
     {% for gig in gigs %}
     <li data-venue="{{ gig.Venue.id }}">
-        <a href="{% url 'gigluvver_app:gig' gig.GigID %}">{{ gig.GigName }}</a>
+        <a href="{% url 'gigluvver_app:gig' gig.id %}">{{ gig.GigName }}</a>
     </li>
     {% empty %}
     <strong>There are no gigs present.</strong>

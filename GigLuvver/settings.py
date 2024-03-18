@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'gigluvver_app',
+    'gigluvver_app.templatetags',
 ]
 
 MIDDLEWARE = [
@@ -86,6 +87,7 @@ DATABASES = {
     }
 }
 
+AUTH_PROFILE_MODULE = 'gigluvver_app.UserProfile'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

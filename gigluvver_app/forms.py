@@ -14,6 +14,16 @@ class ArtistProfileForm(forms.ModelForm):
 		model = UserProfile
 		fields = ('StageName', 'Genre', 'ProfilePicture')
 
+class UserProfileForm(forms.ModelForm):
+	class Meta:
+		model = UserProfile
+		fields = ()
+
+class UserProfileForm(forms.ModelForm):
+	class Meta:
+		model = UserProfile
+		fields = ()
+
 class GigForm(forms.ModelForm):
 	gigname = forms.CharField(max_length=200, help_text="Please enter the gig name: ")
 	date = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}))

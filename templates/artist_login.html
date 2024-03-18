@@ -14,5 +14,9 @@
     <br />
     <input type="submit" value="submit" />
 </form>
+    {% for user in users %}
+    <p>
+    </p>
+    {% endfor %}
     <a href="{% url 'gigluvver_app:create_artist_account' %}">Create new Artist Account</a><br />
 {% endblock %}

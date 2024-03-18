@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load custom_filters %}
 
 {% block title_block %}
 GigLuvver - Gigs
@@ -15,30 +16,50 @@ GigLuvver - Gigs
     {% endfor %}
 </select>
 
-<select id="peformer-select">
+<select id="performer-select">
     <option value="">All Performers</option>
     {% for performer in performers %}
-        <option value="{{ performer.id }}">{{ performer.StageName }}</option>
+        <option value="{{ performer.StageName }}">{{ performer.StageName }}</option>
     {% endfor %}
 </select>
 
 <select id="genre-select">
     <option value="">All Genres</option>
     {% for genre in genres %}
-        <option value="{{ genre.id }}">{{ genre }}</option>
+        <option value="{{ genre }}">{{ genre }}</option>
     {% endfor %}
 </select>
 
+<select id="sort-select">
+    <option value="default">Sort</option>
+    <option value="asc">Sort Ascending by Name</option>
+    <option value="desc">Sort Descending by Name</option>
+</select>
 
 <ul id="gig-list">
     {% for gig in gigs %}
-    <li data-venue="{{ gig.Venue.id }}">
+    <li data-venue="{{ gig.Venue.id }}" data-performers='{% with gig_id=gig.id|stringformat:"d" %}
+                                                            {% with key="a"|add:gig_id %}
+                                                                {% for performer in context_performers|get_key:key %}
+                                                                    {{ performer.StageName }},
+                                                                {% endfor %}
+                                                            {% endwith %}
+                                                        {% endwith %}'
+                                        data-genres='{% with gig_id=gig.id|stringformat:"d" %}
+                                                        {% with key="a"|add:gig_id %}
+                                                            {% for performer in context_performers|get_key:key %}
+                                                                {{ performer.Genre }},
+                                                            {% endfor %}
+                                                        {% endwith %}
+                                                    {% endwith %}'
+                                        data-id="{{ gig.id }}">
         <a href="{% url 'gigluvver_app:gig' gig.GigID %}">{{ gig.GigName }}</a>
     </li>
     {% empty %}
     <strong>There are no gigs present.</strong>
     {% endfor %}
 </ul>
+
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -47,25 +68,64 @@ document.addEventListener("DOMContentLoaded", function() {
     var genreSelect = document.getElementById("genre-select");
     var gigList = document.getElementById("gig-list");
     var gigs = gigList.getElementsByTagName("li");
+    var sortSelect = document.getElementById("sort-select");
 
     venueSelect.addEventListener("change", filterGigs);
     performerSelect.addEventListener("change", filterGigs);
     genreSelect.addEventListener("change", filterGigs);
+    sortSelect.addEventListener("change", sortGigs);
     
     function filterGigs() {
         var selectedVenueId = venueSelect.value;
+        var selectedPerformerId = performerSelect.value;
+        var selectedGenre = genreSelect.value;
         
         for (var i = 0; i < gigs.length; i++) {
             var gigVenueId = gigs[i].getAttribute("data-venue");
-            var selectedPerformerId = gigs[i].getAttribute("data-performers");
-            var selectedGenreId = gigs[i].getAttribute("genre-performers");
+            var gigPerformersIds = gigs[i].getAttribute("data-performers");
+            var gigGenres = gigs[i].getAttribute("data-genres");
+
+            var venueMatch = selectedVenueId === "" || gigVenueId === selectedVenueId;
+            var performerMatch = selectedPerformerId === "" || gigPerformersIds.includes(selectedPerformerId);
+            var genreMatch = selectedGenre === "" || gigGenres.includes(selectedGenre);
             
-            if (selectedVenueId === "" || gigVenueId === selectedVenueId) {
+            if (venueMatch && performerMatch && genreMatch) {
                 gigs[i].style.display = "block";
             } else {
                 gigs[i].style.display = "none";
             }
         }
+    };
+
+    function sortGigs() {
+        var sortOrder = sortSelect.value;
+        var sortedGigs;
+        
+        if (sortOrder === 'default') {
+            sortedGigs = Array.from(gigs).sort(function(a, b) {
+                var idA = parseInt(a.getAttribute("data-id"));
+                var idB = parseInt(b.getAttribute("data-id"));
+                return idA - idB;
+            });
+        } else if (sortOrder === 'asc' || sortOrder === 'desc') {
+            sortedGigs = Array.from(gigs).sort(function(a, b) {
+                var nameA = a.querySelector("a").innerText.toLowerCase();
+                var nameB = b.querySelector("a").innerText.toLowerCase();
+                if (sortOrder === 'asc') {
+                    return nameA.localeCompare(nameB);
+                } else {
+                    return nameB.localeCompare(nameA);
+                }
+            });
+        }
+
+        while (gigList.firstChild) {
+            gigList.removeChild(gigList.firstChild);
+        }
+
+        sortedGigs.forEach(function(gig) {
+            gigList.appendChild(gig);
+        });
     };
 });
 </script>

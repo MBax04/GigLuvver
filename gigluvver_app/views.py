@@ -4,14 +4,17 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from gigluvver_app.forms import UserForm, ArtistProfileForm
 from django.contrib.auth.decorators import login_required
-from gigluvver_app.models import Gig, Performer, Venue, UserProfile
+from gigluvver_app.models import Gig, Performer, Venue, UserProfile, Attendees
+from django.db.models import Count
+
 
 def home(request):
-
-    gig_list = Gig.objects.order_by('Date')[:10]
-
     context_dict = {}
-    context_dict['gigs'] = gig_list
+
+    upcoming_gigs_list = Gig.objects.order_by('Date')[:5]
+    context_dict['upcoming_gigs'] = upcoming_gigs_list
+    popular_gigs_list = Gig.objects.annotate(num_attendees=Count('attendees')).order_by('-num_attendees')[:5]
+    context_dict['popular_gigs'] = popular_gigs_list
 
     response = render(request, 'home.html', context_dict)
     return response
@@ -161,6 +164,15 @@ def gigs(request):
     genre_list = UserProfile.objects.values_list('Genre', flat=True).distinct()
     genre_list = list(filter(lambda x: x != '', genre_list))
     context_dict['genres'] = genre_list
+    gig_performers_list = Performer.objects.all()
+    context_dict['gig_performers'] = gig_performers_list
+
+    context_performers = {}
+    for gig in gig_performers_list:
+        performers = gig.Performers.all()
+        key = 'a' + str(gig.id)
+        context_performers[key] = performers
+    context_dict['context_performers'] = context_performers
 
     response = render(request, 'gigs.html', context=context_dict)
     return response
@@ -173,6 +185,9 @@ def gig(request, gig_id):
     performer = Performer.objects.get(PerformerGig=gig)
     performer_list = performer.Performers.all()
     context_dict['performers'] = performer_list
+    context_dict['gig_picture'] = gig.GigPicture
+    num_going = Attendees.objects.filter(Gigs=gig).count()
+    context_dict['num_going'] = num_going
     
     response = render(request, 'gig.html', context=context_dict)
     return response

@@ -42,7 +42,7 @@
             width: 200px;
             background-color: #c743ff69;
             padding: 10px;
-            height: 100vh;
+            height: 120vh;
         }
 
         #content {
@@ -51,7 +51,6 @@
             padding: 20px;
         }
 
-        /* Style for buttons */
         .topbar-button {
             background-color: #01ff0977;
             border: none;
@@ -86,38 +85,48 @@
 <body> 
     <div id="topbar" class="fixed">
         <h1>{% block title_block %}Gig Luvver{% endblock %}</h1>
-        <p>Welcome{% if user.is_authenticated %} 
-                    {% if profile.IsPerformer %}
-                        {{ profile.StageName }}
-                    {% else %}
-                        {{ user.username }}
-                    {% endif %}
-                  {% endif %}!</p>
-
-        <div id="topbar-buttons">
+        
+            <div id="topbar-buttons">
             {% if user.is_authenticated %}
-            <a href="{% url 'gigluvver_app:log_out' %}" class="topbar-button">Logout</a>
+            <form action="{% url 'gigluvver_app:log_out' %}" method="get">
+                <button type="submit" class="btn btn-primary">LogOut</button>
+            </form>
             {% else %}
-            <a href="{% url 'gigluvver_app:log_in' %}" class="topbar-button">Login</a>
-            <a href="{% url 'gigluvver_app:artist_log_in' %}" class="topbar-button">Artist Login</a>
+            <div class="dropdown">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                Login
+            </button>
+            <ul class="dropdown-menu">
+                <a href="{% url 'gigluvver_app:log_in' %}" class="dropdown-item">Login</a>
+                <a href="{% url 'gigluvver_app:artist_log_in' %}" class="dropdown-item">Artist Login</a>
+            </ul>
+            </div>
             {% endif %}
-
+        
         </div>
+        
     </div>
     <div id="content-container">
         <div id="sidebar">
-            <ul>
-                <li><a href="{% url 'gigluvver_app:home' %}">HomePage</a></li>
-                <li><a href="{% url 'gigluvver_app:gigs' %}">Gigs</a></li>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'gigluvver_app:home' %}"><p class="fs-4 fw-bold mb-0">HomePage</p></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'gigluvver_app:gigs' %}"><p class="fs-4 fw-bold mb-0">Gigs</p></a>
+                </li>
                 {% if user.is_authenticated %}
                     {% if profile.IsPerformer %}
-                        <li><a href="{% url 'gigluvver_app:artist_profile' %}">Artist Profile</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'gigluvver_app:artist_profile' %}"><p class="fs-4 fw-bold mb-0">Artist Profile</p></a>
+                    </li>
                     {% else %}
-                        <li><a href="{% url 'gigluvver_app:user_profile' %}">Profile</a></li>
+                    <li class="nav-item">
+                    <a class="nav-link disabled" href="{% url 'gigluvver_app:user_profile' %}"><p class="fs-4 fw-bold mb-0">Profile</p></a>
+                    </li>
                     {% endif %}
                 {% endif %}
-                <!-- Add more links as needed -->
-            </ul>
+              </ul>
         </div>
         <div id="content">
             {% block body_block %}

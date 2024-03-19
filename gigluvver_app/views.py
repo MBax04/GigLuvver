@@ -203,7 +203,7 @@ def gigs(request):
 def gig(request, gig_id):
     context_dict = {}
 
-    gig = Gig.objects.get(GigID=gig_id)
+    gig = Gig.objects.get(id=gig_id)
     context_dict['gig'] = gig
     performer = Performer.objects.get(PerformerGig=gig)
     performer_list = performer.Performers.all()

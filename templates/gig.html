@@ -27,8 +27,10 @@ GigLuvver - {{ gig.GigName }}
         <strong>There are no performers present.</strong>
     {% endif %}
 
-    <img src="{{ gig_picture.url }}" alt="Gig Picture" style="width: 200px; height: 300px;"/>
-    
+    {% if gig_picture %}
+        <img src="{{ gig_picture.url }}" alt="Gig Picture" style="width: 200px; height: 300px;"/>
+    {% endif %}
+
     <h2>Details</h2>
     {{ BASE_DIR }}
     <ul>

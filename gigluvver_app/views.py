@@ -48,9 +48,10 @@ def log_out(request):
 def my_tickets(request):
     context_dict = {}
 
-    gig_list = Gig.objects.all()
-    context_dict['gigs'] = gig_list
     context_dict['profile'] = get_profile(request)
+    gig_list = Gig.objects.filter(attendees__Attendee=context_dict['profile'])
+    context_dict['gigs'] = gig_list
+
     response = render(request, 'tickets.html', context=context_dict)
     return response
 
@@ -162,7 +163,7 @@ def my_gigs(request):
 
     context_dict['profile'] = get_profile(request)
 
-    gig_list = Gig.objects.all()
+    gig_list = Gig.objects.filter(performer__Performers=context_dict['profile'] ).order_by('Date')
     context_dict['gigs'] = gig_list
     response = render(request, 'my_gigs.html', context=context_dict)
     return response

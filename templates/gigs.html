@@ -36,9 +36,9 @@ GigLuvver - Gigs
     <option value="desc">Sort Descending by Name</option>
 </select>
 
-<ul id="gig-list">
+<ul id="gig-list" class = "nav">
     {% for gig in gigs %}
-    <li data-venue="{{ gig.Venue.id }}" data-performers='{% with gig_id=gig.id|stringformat:"d" %}
+    <li style="width: 150px; margin: 10px;" class = "nav-item" data-venue="{{ gig.Venue.id }}" data-performers='{% with gig_id=gig.id|stringformat:"d" %}
                                                             {% with key="a"|add:gig_id %}
                                                                 {% for performer in context_performers|get_key:key %}
                                                                     {{ performer.StageName }},
@@ -53,7 +53,7 @@ GigLuvver - Gigs
                                                         {% endwith %}
                                                     {% endwith %}'
                                         data-id="{{ gig.id }}">
-        <a href="{% url 'gigluvver_app:gig' gig.id %}">{{ gig.GigName }}</a>
+        <a href="{% url 'gigluvver_app:gig' gig.id %}" class="d-block text-center fw-bold mb-0 fs-5 text-decoration-none"><img src="{{ gig.GigPicture.url }}" alt="Gig Picture" style="width: 150px; height: 225px;"/><br/>{{ gig.GigName }}</a>
     </li>
     {% empty %}
     <strong>There are no gigs present.</strong>

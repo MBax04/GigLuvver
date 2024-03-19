@@ -9,9 +9,10 @@
     <div>
         <h1>Upcoming Gigs</h1>
         {% if upcoming_gigs %}
-            <ul>
+            <ul class = "nav">
                 {% for gig in upcoming_gigs %}
-                    <li><a href="{% url 'gigluvver_app:gig' gig.id %}">{{ gig.GigName }}</a></li>
+                    <li class = "nav-item" style="width: 150px; margin: 10px;">
+                    <a href="{% url 'gigluvver_app:gig' gig.id %}" class="d-block text-center fw-bold mb-0 fs-5 text-decoration-none"><img src="{{ gig.GigPicture.url }}" alt="Gig Picture" style="width: 150px; height: 225px;"/><br/>{{ gig.GigName }}</a></li>
                 {% endfor %}
             </ul>
         {% else %}
@@ -21,9 +22,10 @@
     <div>
         <h1>Popular Gigs</h1>
         {% if upcoming_gigs %}
-            <ul>
+            <ul class = "nav">
                 {% for gig in popular_gigs %}
-                    <li><a href="{% url 'gigluvver_app:gig' gig.id %}">{{ gig.GigName }}</a></li>
+                    <li class = "nav-item" style="width: 150px; margin: 10px;"> 
+                    <a href="{% url 'gigluvver_app:gig' gig.id %}" class="d-block text-center fw-bold mb-0 fs-5 text-decoration-none"><img src="{{ gig.GigPicture.url }}" alt="Gig Picture" style="width: 150px; height: 225px;"/><br/>{{ gig.GigName }}</a></li>
                 {% endfor %}
             </ul>
         {% else %}

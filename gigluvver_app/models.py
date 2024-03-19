@@ -27,6 +27,7 @@ class UserProfile(models.Model):
 class Venue(models.Model):
     VenueName = models.CharField(max_length=128, unique=True)
     Location = models.CharField(max_length=128)
+    Position = models.CharField(max_length=128, default="55.8724286,-4.2925758")
 
     def __str__(self):
         return self.VenueName

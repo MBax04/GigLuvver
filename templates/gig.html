@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+{% block head_block %}
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEkGI8QpdLPjPmEfggwsMFtYUpD7mCKLA&callback=console.debug&libraries=maps,marker&v=beta"></script>
+{% endblock %}
+
 {% block title_block %}
 GigLuvver - {{ gig.GigName }}
 {% endblock %}
 
 {% block body_block %}
+    <div class="gig-info">
     <h1>{{ gig.GigName }}</h1>
 
     <h2>Performers</h2>
@@ -32,6 +37,11 @@ GigLuvver - {{ gig.GigName }}
         <li>Venue: {{ gig.Venue }}</br></li>
     </ul>
     <p>Number of people going: {{ num_going }}</p>
-    <!-- map api -->
-
+    </div>
+    
+    <div class="map">
+    <gmp-map center="{{ gig.Venue.Position }}" zoom="17" map-id="{{ gig.Venue.VenueName}}">
+        <gmp-advanced-marker position="{{ gig.Venue.Position }}" title="{{ gig.Venue.VenueName }}"></gmp-advanced-marker>
+    </gmp-map>
+    </div>
 {% endblock %}

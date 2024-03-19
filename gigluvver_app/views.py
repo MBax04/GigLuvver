@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
-from gigluvver_app.forms import UserForm, ArtistProfileForm, UserProfileForm
+from gigluvver_app.forms import UserForm, ArtistProfileForm, UserProfileForm, GigForm
 from django.contrib.auth.decorators import login_required
 from gigluvver_app.models import Gig, Performer, Venue, UserProfile, Attendees
 from django.db.models import Count
@@ -48,9 +48,10 @@ def log_out(request):
 def my_tickets(request):
     context_dict = {}
 
-    gig_list = Gig.objects.all()
-    context_dict['gigs'] = gig_list
     context_dict['profile'] = get_profile(request)
+    gig_list = Gig.objects.filter(attendees__Attendee=context_dict['profile'])
+    context_dict['gigs'] = gig_list
+
     response = render(request, 'tickets.html', context=context_dict)
     return response
 
@@ -162,7 +163,7 @@ def my_gigs(request):
 
     context_dict['profile'] = get_profile(request)
 
-    gig_list = Gig.objects.all()
+    gig_list = Gig.objects.filter(performer__Performers=context_dict['profile'] ).order_by('Date')
     context_dict['gigs'] = gig_list
     response = render(request, 'my_gigs.html', context=context_dict)
     return response
@@ -236,8 +237,16 @@ def success_page(request):
 
 
 def create_gig(request):
-    response = render(request, 'create_gig.html', context={'profile':get_profile(request)})
-    return response
+    form = GigForm()
+    if request.method == 'POST':
+        form = GigForm(request.POST)
+
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('/gigluvver_app/')
+        else:
+            print(form.errors)
+    return render(request, 'create_gig.html', context={'profile':get_profile(request), 'form':form})
 
 def get_profile(request):
     try:

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
-from gigluvver_app.forms import UserForm, ArtistProfileForm, UserProfileForm
+from gigluvver_app.forms import UserForm, ArtistProfileForm, UserProfileForm, GigForm
 from django.contrib.auth.decorators import login_required
 from gigluvver_app.models import Gig, Performer, Venue, UserProfile, Attendees
 from django.db.models import Count
@@ -245,7 +245,7 @@ def create_gig(request):
             return redirect('/gigluvver_app/')
         else:
             print(form.errors)
-    return render(request, 'create_gig.html', context={'profile':get_profile(request)}, {'form': form})
+    return render(request, 'create_gig.html', context={'profile':get_profile(request), 'form':form})
 
 def get_profile(request):
     try:

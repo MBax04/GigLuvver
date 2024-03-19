@@ -19,16 +19,13 @@ class UserProfileForm(forms.ModelForm):
 		model = UserProfile
 		fields = ()
 
-class UserProfileForm(forms.ModelForm):
-	class Meta:
-		model = UserProfile
-		fields = ()
 
 class GigForm(forms.ModelForm):
-	gigname = forms.CharField(max_length=200, help_text="Please enter the gig name: ")
-	date = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}))
-	time = forms.TimeField(widget=forms.widgets.TimeInput(attrs={'type': 'time'}))
+	GigName = forms.CharField(max_length=200, help_text="Please enter the gig name: ")
+	Date = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}))
+	Time = forms.TimeField(widget=forms.widgets.TimeInput(attrs={'type': 'time'}))
+
 
 	class Meta:
 		model = Gig
-		fields = ('gigname', 'date', 'time')
+		fields = ('GigName', 'Date', 'Time', 'Venue', 'GigPicture')

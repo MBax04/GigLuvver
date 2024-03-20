@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
+{% load static %}
 
 {% block head_block %}
 <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEkGI8QpdLPjPmEfggwsMFtYUpD7mCKLA&callback=console.debug&libraries=maps,marker&v=beta"></script>
@@ -40,7 +40,7 @@ GigLuvver - {{ gig.GigName }}
     </ul>
     <p>Number of people going: {{ num_going }}</p>
     </div>
-    
+
     <div class="map">
     <gmp-map center="{{ gig.Venue.Position }}" zoom="17" map-id="{{ gig.Venue.VenueName}}">
         <gmp-advanced-marker position="{{ gig.Venue.Position }}" title="{{ gig.Venue.VenueName }}"></gmp-advanced-marker>

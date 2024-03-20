@@ -9,22 +9,11 @@
     {% if profile.IsPerformer %}
     <form method="post" action="{% url 'gigluvver_app:create_gig' %}">
         {% csrf_token %}
-        
-        <label for="gig_name">Gig Name:</label>
-        <input type="text" id="gig_name" name="gig_name" required>
-        <br><br>
-
-        <label for="gig_date">Date:</label>
-        <input type="date" id="gig_date" name="gig_date" required>
-        <br><br>
-
-        <label for="gig_time">Time:</label>
-        <input type="time" id="gig_time" name="gig_time" required>
-        <br><br>
-
-        <label for="gig_place">Place:</label>
-        <input type="text" id="gig_place" name="gig_place" required>
-        <br><br>
+        {% for field in form.visible_fields %}
+            {{ field.errors }}
+            {{ field.help_text }}
+            {{ field }}
+        {% endfor %}
 
         <input type="submit" value="Create Gig">
     </form>

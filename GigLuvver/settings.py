@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'gigluvver_app',
     'gigluvver_app.templatetags',
+    'bootstrap5',
 ]
 
 MIDDLEWARE = [

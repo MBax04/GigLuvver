@@ -82,6 +82,8 @@ def create_user_account(request):
             user.save()
             if profile_form.is_valid():
                 user_profile = profile_form.save(commit=False)
+                if 'picture' in request.FILES:
+                    user_profile.picture = request.FILES['picture']
                 user_profile.UserField = user
                 user_profile.save()
 

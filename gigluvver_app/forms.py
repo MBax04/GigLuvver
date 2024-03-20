@@ -17,7 +17,7 @@ class ArtistProfileForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
 	class Meta:
 		model = UserProfile
-		fields = ()
+		fields = ('ProfilePicture',)
 
 
 class GigForm(forms.ModelForm):

@@ -31,13 +31,16 @@ def log_in(request):
                 login(request, user)
                 return redirect(reverse('gigluvver_app:home'))
             else:
-                return HttpResponse("Your account is disabled.")
+                error_message = "Your account is disabled."
         else:
             print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+            error_message = "Invalid login details supplied."
+        profile = None
     else:
-        response = render(request, 'user_login.html', context={'profile':get_profile(request)})
-        return response
+        profile = get_profile(request)
+        error_message=""
+    response = render(request, 'user_login.html', context={'profile':profile,'error_message':error_message})
+    return response
 
 @login_required
 def log_out(request):
@@ -146,13 +149,16 @@ def artist_log_in(request):
                 login(request, user)
                 return redirect(reverse('gigluvver_app:home'))
             else:
-                return HttpResponse("Your account is disabled.")
+                error_message = "Your account is disabled."
         else:
             print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+            error_message = "Invalid login details supplied."
+        profile = None
     else:
-        response = render(request, 'artist_login.html', context={'profile':get_profile(request)})
-        return response
+        profile = get_profile(request)
+        error_message = ""
+    response = render(request, 'artist_login.html', context={'profile':profile, 'error_message':error_message})
+    return response
 
 @login_required
 def my_gigs(request):

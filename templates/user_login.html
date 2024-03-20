@@ -6,6 +6,9 @@ GigLuvver - Login or Create Account.
 {% endblock %}
 
 {% block body_block %}
+{% if error_message != "" %}
+<p>{{ error_message }}</p>
+{% endif %}
 <form id="login_form" method="post" action="{% url 'gigluvver_app:log_in' %}">
     {% csrf_token %}
     Username: <input type="text" name="username" value="" size="50" />

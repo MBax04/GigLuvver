@@ -13,32 +13,41 @@ GigLuvver - {{ gig.GigName }}
     <div class="gig-info">
     <h1>{{ gig.GigName }}</h1>
 
-    <h2>Performers</h2>
-    {% if performers %}
+    {% if gig_picture %}
+        <img src="{{ gig_picture.url }}" alt="Gig Picture" style="width: 300px; height: 450px;"/>
+    {% endif %}
+    <h2><p class="fs-3 fw-bold mb-0">Details</p></h2>
     <ul>
-        {% for performer in performers %}
-            <li>
-                {{ performer.StageName }}</br>
-                {{ performer.Genre }}
-            </li>
-        {% endfor %}
+        <li><h2><p class="fs-5 fw-bold mb-0">Performers</p></h2></li>
+        {% if performers %}
+        <ul>
+            {% for performer in performers %}
+                <li>
+                    <p class="fs-6 mb-0">{{ performer.StageName }} - {{ performer.Genre }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+        <li><h2><p class="fs-5 fw-bold mb-0">Date and time</pclass></h2></li>
+            <ul>
+                <li>Date: {{ gig.Date }}</br></li>
+                <li>Time: {{ gig.Time }}</br></li>
+            </ul>
+        <li><h2><p class="fs-5 fw-bold mb-0">Venue</pclass></h2></li>
+            <ul>
+                <li>{{ gig.Venue }}</br></li>
+            </ul>
+        <li><h2><p class="fs-5 fw-bold mb-0">Number of People attending</pclass></h2></li>
+            <ul>
+                <li><p>Number of people going: {{ num_going }}</p></li>
+            </ul>
     </ul>
     {% else %}
         <strong>There are no performers present.</strong>
     {% endif %}
 
-    {% if gig_picture %}
-        <img src="{{ gig_picture.url }}" alt="Gig Picture" style="width: 200px; height: 300px;"/>
-    {% endif %}
-
-    <h2>Details</h2>
     {{ BASE_DIR }}
-    <ul>
-        <li>Date: {{ gig.Date }}</br></li>
-        <li>Time: {{ gig.Time }}</br></li>
-        <li>Venue: {{ gig.Venue }}</br></li>
-    </ul>
-    <p>Number of people going: {{ num_going }}</p>
+    
+    
     </div>
     
     <div class="map">

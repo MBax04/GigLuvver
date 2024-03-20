@@ -7,16 +7,18 @@ GigLuvver - My Gigs
 
 {% block body_block %}
 {% if profile.IsPerformer %}
-<a href="{% url 'gigluvver_app:create_gig' %}">Create new gig</a><br />
-    {% for gig in gigs %}
-    <li data-venue="{{ gig.Venue.id }}">
-        <a href="{% url 'gigluvver_app:gig' gig.id %}">{{ gig.GigName }}</a>
-    </li>
-    {% empty %}
-    <strong>There are no gigs present.</strong>
-    {% endfor %}
-    <!-- List of my gigs for artist
-    ability to create new gig -->
+<form action="{% url 'gigluvver_app:create_gig' %}" method="get">
+    <button type="submit" class="btn btn-primary">Create Gig</button>
+</form>
+    <ul class = "nav">
+        {% for gig in gigs %}
+        <li data-venue="{{ gig.Venue.id }}" class = "nav-item" style="width: 150px; margin: 10px;">
+            <a href="{% url 'gigluvver_app:gig' gig.id %}" class="d-block text-center fw-bold mb-0 fs-5 text-decoration-none"><img src="{{ gig.GigPicture.url }}" alt="Gig Picture" style="width: 150px; height: 225px;"/>{{ gig.GigName }}</a>
+        </li>
+        {% empty %}
+        <strong>There are no gigs present.</strong>
+        {% endfor %}
+    </ul>
     {% else %}
     <p>Not logged in as an artist.</p>
     {% endif %}

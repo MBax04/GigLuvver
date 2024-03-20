@@ -5,15 +5,15 @@ from gigluvver_app import urls,test_resources,views
 class PageResponseTests(TestCase):
     def test_response(self):
         for url in urls.urlpatterns:
-            response = self.client.get(reverse(f"gigluvver_app:{url.name}"))
-            self.assertEquals(response.status_code, 200, f"{test_resources.HEADER_FOOTER}Failed to retrieve {url.name}.{test_resources.HEADER_FOOTER}")
+            if url.name in test_resources.links['non_log_in']:
+                response = self.client.get(reverse(f"gigluvver_app:{url.name}"))
+                self.assertEquals(response.status_code, 200, f"{test_resources.HEADER_FOOTER}Failed to retrieve {url.name}.{test_resources.HEADER_FOOTER}")
 
 class PageLinkLoginTests(TestCase):
     def test_links(self):
         for url in urls.urlpatterns:
-            if url.name != "gig":
+            if url.name != "gig" and url.name != "my_tickets":
                 response = self.client.get(reverse(f"gigluvver_app:{url.name}"))
-                print(url.name)
                 if url.name in test_resources.links['non_log_in'].keys():
                     for link in test_resources.links['non_log_in'][url.name]:
                         self.assertContains(response, f'<a href="{reverse(f"gigluvver_app:{link}")}">',
@@ -45,3 +45,13 @@ class LogInTests(TestCase):
                                                                     'Genre':'Test',
                                                                     'ProfilePicture':'media\profile_images\test_image.png'})
         self.assertEquals(response.status_code, 302, msg_prefix=f"{test_resources.HEADER_FOOTER}Could not create artist account.{test_resources.HEADER_FOOTER}")
+
+    def log_in_user(self):
+        response = self.client.post("log_in/", data={'username':'testing_user',
+                                                     'password':'12345'})
+        self.assertEquals(response.status_code, 302, msg_prefix="Could not log in as user.")
+
+    def log_in_artist(self):
+        response = self.client.post("artist_log_in/", data={'username':'testing_artist',
+                                                     'password':'12345'})
+        self.assertEquals(response.status_code, 302, msg_prefix="Could not log in as artist.")

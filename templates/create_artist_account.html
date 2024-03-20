@@ -13,4 +13,9 @@ GigLuvver - Create Artist Account
 
     <input type="submit" name="submit" value="Create account" />
 </form>
+{% if registered %}
+<br>
+<p>Account successfully created!</p>
+<a href="{% url 'gigluvver_app:artist_log_in' %}">Log In</a>
+{% endif %}
 {% endblock %}

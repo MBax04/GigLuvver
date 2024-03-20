@@ -144,10 +144,7 @@ def artist_log_in(request):
         if user:
             if user.is_authenticated:
                 login(request, user)
-                #profile = user.get_profile()
                 return redirect(reverse('gigluvver_app:home'))
-                #else:
-                #    return HttpResponse("Your account is not an artist account. Try signing in as a user.")
             else:
                 return HttpResponse("Your account is disabled.")
         else:

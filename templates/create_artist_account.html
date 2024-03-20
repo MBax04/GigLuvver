@@ -6,6 +6,7 @@ GigLuvver - Create Artist Account
 {% endblock %}
 
 {% block body_block %}
+{% if not registered %}
 <form id="user_form" method="post" action="{% url 'gigluvver_app:create_artist_account' %}" enctype="multipart/form-data">
     {% csrf_token %}
     {{ user_form.as_p }}
@@ -13,7 +14,7 @@ GigLuvver - Create Artist Account
 
     <input type="submit" name="submit" value="Create account" />
 </form>
-{% if registered %}
+{% else %}
 <br>
 <p>Account successfully created!</p>
 <a href="{% url 'gigluvver_app:artist_log_in' %}">Log In</a>

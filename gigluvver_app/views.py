@@ -82,8 +82,11 @@ def create_user_account(request):
             user.save()
             if profile_form.is_valid():
                 user_profile = profile_form.save(commit=False)
-                if 'picture' in request.FILES:
-                    user_profile.picture = request.FILES['picture']
+                
+                if 'ProfilePicture' in request.FILES:
+                    profile_picture = request.FILES['ProfilePicture']
+                    user_profile.ProfilePicture = profile_picture
+
                 user_profile.UserField = user
                 user_profile.save()
 
@@ -118,8 +121,11 @@ def create_artist_account(request):
             if profile_form.is_valid():
                 user_profile = profile_form.save(commit=False)
                 user_profile.IsPerformer = True
-                if 'picture' in request.FILES:
-                    user_profile.picture = request.FILES['picture']
+
+                if 'ProfilePicture' in request.FILES:
+                    profile_picture = request.FILES['ProfilePicture']
+                    user_profile.ProfilePicture = profile_picture
+
                 user_profile.UserField = user
 
                 user_profile.save()

@@ -6,6 +6,7 @@ GigLuvver - Create User Account
 {% endblock %}
 
 {% block body_block %}
+{% if not registered %}
 <form id="user_form" method="post" action="{% url 'gigluvver_app:create_user_account' %}" enctype="multipart/form-data">
     {% csrf_token %}
     {{ user_form.as_p }}
@@ -13,7 +14,7 @@ GigLuvver - Create User Account
 
     <input type="submit" name="submit" value="Create account" />
 </form>
-{% if registered %}
+{% else %}
 <br>
 <p>Account successfully created!</p>
 <a href="{% url 'gigluvver_app:log_in' %}">Log In</a>

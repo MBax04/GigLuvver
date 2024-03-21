@@ -228,11 +228,13 @@ def change_profile_picture(request):
             user_profile = UserProfile.objects.get(UserField=request.user)
             user_profile.ProfilePicture = profile_picture
             user_profile.save()
-            return redirect('gigluvver_app:success_page')
+            return redirect('gigluvver_app:success_page', user_profile_id=user_profile.id)
     return render(request, 'change_profile_picture.html',context=context)
 
-def success_page(request):
-    response = render(request, 'success_page.html')
+def success_page(request, user_profile_id):
+    user_profile = UserProfile.objects.get(id=user_profile_id)
+    context_dict = {'profile': user_profile}
+    response = render(request, 'success_page.html', context=context_dict)
     return response
 
 

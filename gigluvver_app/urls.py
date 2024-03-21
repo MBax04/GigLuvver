@@ -20,5 +20,5 @@ urlpatterns = [
     path('change_profile_picture/', views.change_profile_picture, name = 'change_profile_picture'),
     path('create_gig/', views.create_gig, name = 'create_gig'),
     path('log_out/', views.log_out, name= 'log_out'),
-    path('success/', views.success_page, name='success_page')
+    path('success/<int:user_profile_id>/', views.success_page, name='success_page')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

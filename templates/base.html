@@ -62,7 +62,13 @@
         </div>
         <div id="content">
             {% block body_block %}
-            {% endblock %} 
+            {% endblock %}
+            <button type="button" class="btn btn-primary" onclick="goBack()">Go Back</button>
+            <script>
+                function goBack() {
+                  window.history.back();
+                }
+            </script>
         </div>
     </div>
 </body>

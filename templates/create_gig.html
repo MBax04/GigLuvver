@@ -6,7 +6,9 @@
 {% endblock %}
 
 {% block body_block %}
-    {% if not success %}
+    {% if not success_photo %}
+    <p>Please provide a gig picture.</p>
+    {% elif not success %}
     <p>Invalid entry. Please fill out all fields.</p>
     {% endif %}
     {% if profile.IsPerformer %}

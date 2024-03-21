@@ -250,16 +250,22 @@ def success_page(request):
 def create_gig(request):
     form = GigForm()
     success = True
+    success_photo = True
     if request.method == 'POST':
         form = GigForm(request.POST)
 
-        if form.is_valid() and request.FILES.get('GigPicture'):
-            form.save(commit=True)
-            return redirect('/gigluvver_app/')
+        if form.is_valid():
+            if request.FILES.get('GigPicture'):
+                gig = form.save(commit=True)
+                performer = Performer.objects.get(PerformerGig=gig)
+                performer.Performers.add(UserProfile.objects.get(UserField=request.user))
+                return redirect('/gigluvver_app/')
+            else:
+                success_photo = False
         else:
             print(form.errors)
             success = False
-    return render(request, 'create_gig.html', context={'profile':get_profile(request), 'form':form, 'success':success})
+    return render(request, 'create_gig.html', context={'profile':get_profile(request), 'form':form, 'success':success, 'success_photo':success_photo})
 
 def get_profile(request):
     try:

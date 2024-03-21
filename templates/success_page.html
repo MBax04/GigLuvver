@@ -8,5 +8,9 @@
 {% block body_block %}
     <h1>Success!</h1>
     <p>Your profile picture has been updated successfully.</p>
-    <li><a href="{% url 'gigluvver_app:user_profile' %}">Return to Profile</a></li>
+    {% if profile.IsPerformer %}
+    <a href="{% url 'gigluvver_app:artist_profile' %}">Return to Profile</a>
+    {% else %}
+    <a href="{% url 'gigluvver_app:user_profile' %}">Return to Profile</a>
+    {% endif %}
 {% endblock %}

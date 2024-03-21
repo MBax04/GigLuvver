@@ -232,7 +232,7 @@ def gig(request, gig_id):
     context_dict['profile'] = get_profile(request)
     context_dict['gig_picture'] = gig.GigPicture
     num_going = Attendees.objects.filter(Gigs=gig).count()
-    context_dict['going'] = attendee.Gigs.contains(gig)
+    context_dict['going'] = Attendees.objects.filter(Gigs=gig)
     context_dict['num_going'] = num_going
     
     response = render(request, 'gig.html', context=context_dict)

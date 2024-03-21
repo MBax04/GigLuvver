@@ -7,7 +7,6 @@ GigLuvver - My Gigs
 
 {% block body_block %}
 {% if profile.IsPerformer %}
-<<<<<<< Updated upstream
 <form action="{% url 'gigluvver_app:create_gig' %}" method="get">
     <button type="submit" class="btn btn-primary">Create Gig</button>
 </form>
@@ -28,19 +27,6 @@ GigLuvver - My Gigs
         <strong>There are no gigs present.</strong>
         {% endfor %}
     </ul>
-=======
-<a href="{% url 'gigluvver_app:create_gig' %}">Create new gig</a><br />
-<a href="{% url 'gigluvver_app:delete_gig' %}">Delete gig</a><br />
-    {% for gig in gigs %}
-    <li data-venue="{{ gig.Venue.id }}">
-        <a href="{% url 'gigluvver_app:gig' gig.id %}">{{ gig.GigName }}</a>
-    </li>
-    {% empty %}
-    <strong>There are no gigs present.</strong>
-    {% endfor %}
-    <!-- List of my gigs for artist
-    ability to create new gig -->
->>>>>>> Stashed changes
     {% else %}
     <p>Not logged in as an artist.</p>
     {% endif %}

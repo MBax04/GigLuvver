@@ -1,5 +1,5 @@
 from django import forms
-from gigluvver_app.models import UserProfile,Gig
+from gigluvver_app.models import UserProfile,Gig, Performer, Attendees
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
@@ -29,3 +29,10 @@ class GigForm(forms.ModelForm):
 	class Meta:
 		model = Gig
 		fields = ('GigName', 'Date', 'Time', 'Venue', 'GigPicture')
+
+class DeleteForm(forms.ModelForm):
+	class Meta:
+		model = Performer
+		fields = ('PerformerGig', 'Performers')
+
+		

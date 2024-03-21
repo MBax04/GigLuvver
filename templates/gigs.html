@@ -34,6 +34,8 @@ GigLuvver - Gigs
     <option value="default">Sort</option>
     <option value="asc">Sort Ascending by Name</option>
     <option value="desc">Sort Descending by Name</option>
+    <option value="soon">Sort by Soonest</option>
+    <option value="leastSoon">Sort by Least Soon</option>
 </select>
 
 <ul id="gig-list" class = "nav">
@@ -52,7 +54,8 @@ GigLuvver - Gigs
                                                             {% endfor %}
                                                         {% endwith %}
                                                     {% endwith %}'
-                                        data-id="{{ gig.id }}">
+                                        data-id="{{ gig.id }}" data-date='{% with gig.Date|date:"Ymd" as numeric_date %}{{ numeric_date }}{% endwith %}'
+                                        data-time='{% with gig.Time|date:"His" as numeric_date %}{{ numeric_date }}{% endwith %}'>
         <a href="{% url 'gigluvver_app:gig' gig.id %}" class="d-block text-center fw-bold mb-0 fs-5 text-decoration-none">
             {% if gig.GigPicture %}
             <img src="{{ gig.GigPicture.url }}" alt="Gig Picture" style="width: 150px; height: 225px;"/><br/>

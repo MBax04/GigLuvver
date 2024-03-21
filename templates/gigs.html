@@ -56,7 +56,13 @@ GigLuvver - Gigs
                                                     {% endwith %}'
                                         data-id="{{ gig.id }}" data-date='{% with gig.Date|date:"Ymd" as numeric_date %}{{ numeric_date }}{% endwith %}'
                                         data-time='{% with gig.Time|date:"His" as numeric_date %}{{ numeric_date }}{% endwith %}'>
-        <a href="{% url 'gigluvver_app:gig' gig.id %}" class="d-block text-center fw-bold mb-0 fs-5 text-decoration-none"><img src="{{ gig.GigPicture.url }}" alt="Gig Picture" style="width: 150px; height: 225px;"/><br/>{{ gig.GigName }}</a>
+        <a href="{% url 'gigluvver_app:gig' gig.id %}" class="d-block text-center fw-bold mb-0 fs-5 text-decoration-none">
+            {% if gig.GigPicture %}
+            <img src="{{ gig.GigPicture.url }}" alt="Gig Picture" style="width: 150px; height: 225px;"/><br/>
+            {% else %}
+            <img src="{% static 'images/default_poster.jpg' %}" alt="Gig Picture" style="width: 150px; height: 225px;"/><br/>
+            {% endif %}
+            {{ gig.GigName }}</a>
     </li>
     {% empty %}
     <strong>There are no gigs present.</strong>

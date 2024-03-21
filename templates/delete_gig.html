@@ -2,12 +2,12 @@
 {% load staticfiles %}
 
 {% block title_block %}
-    GigLuvver - Create Gig
+    GigLuvver - Delete Gig
 {% endblock %}
 
 {% block body_block %}
     {% if profile.IsPerformer %}
-    <form method="post" action="{% url 'gigluvver_app:create_gig' %}" enctype="multipart/form-data">
+    <form method="post" action="{% url 'gigluvver_app:delete_gig' %}">
         {% csrf_token %}
         {% for field in form.visible_fields %}
             {{ field.errors }}
@@ -15,8 +15,16 @@
             {{ field }}
         {% endfor %}
 
-        <input type="submit" value="Create Gig">
+        <input type="submit" value="Delete Gig">
     </form>
+
+    <select id="gig-delete">
+        <option value="">All Gigs</option>
+        {% for gig in gigs %}
+            <option value="{{ gig.id }}">{{ gig.GigName }}</option>
+        {% endfor %}
+    </select>
+
     {% else %}
     <p>Not logged in as an artist.</p>
     {% endif %}

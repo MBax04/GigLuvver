@@ -21,4 +21,5 @@ urlpatterns = [
     path('create_gig/', views.create_gig, name = 'create_gig'),
     path('log_out/', views.log_out, name= 'log_out'),
     path('success/<int:user_profile_id>/', views.success_page, name='success_page')
+    path('delete_gig/', views.delete_gig, name='delete_gig'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

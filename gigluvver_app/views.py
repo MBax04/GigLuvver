@@ -31,13 +31,16 @@ def log_in(request):
                 login(request, user)
                 return redirect(reverse('gigluvver_app:home'))
             else:
-                return HttpResponse("Your account is disabled.")
+                error_message = "Your account is disabled."
         else:
             print(f"Invalid login details: {username}, {password}")
-            return redirect(reverse('gigluvver_app:log_in'))
+            error_message = "Invalid login details supplied."
+        profile = None
     else:
-        response = render(request, 'user_login.html', context={'profile':get_profile(request)})
-        return response
+        profile = get_profile(request)
+        error_message=""
+    response = render(request, 'user_login.html', context={'profile':profile,'error_message':error_message})
+    return response
 
 @login_required
 def log_out(request):
@@ -79,6 +82,11 @@ def create_user_account(request):
             user.save()
             if profile_form.is_valid():
                 user_profile = profile_form.save(commit=False)
+                
+                if 'ProfilePicture' in request.FILES:
+                    profile_picture = request.FILES['ProfilePicture']
+                    user_profile.ProfilePicture = profile_picture
+
                 user_profile.UserField = user
                 user_profile.save()
 
@@ -113,8 +121,11 @@ def create_artist_account(request):
             if profile_form.is_valid():
                 user_profile = profile_form.save(commit=False)
                 user_profile.IsPerformer = True
+
                 if 'ProfilePicture' in request.FILES:
-                    user_profile.ProfilePicture = request.FILES['ProfilePicture']
+                    profile_picture = request.FILES['ProfilePicture']
+                    user_profile.ProfilePicture = profile_picture
+
                 user_profile.UserField = user
 
                 user_profile.save()
@@ -144,18 +155,18 @@ def artist_log_in(request):
         if user:
             if user.is_authenticated:
                 login(request, user)
-                #profile = user.get_profile()
                 return redirect(reverse('gigluvver_app:home'))
-                #else:
-                #    return HttpResponse("Your account is not an artist account. Try signing in as a user.")
             else:
-                return HttpResponse("Your account is disabled.")
+                error_message = "Your account is disabled."
         else:
             print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+            error_message = "Invalid login details supplied."
+        profile = None
     else:
-        response = render(request, 'artist_login.html', context={'profile':get_profile(request)})
-        return response
+        profile = get_profile(request)
+        error_message = ""
+    response = render(request, 'artist_login.html', context={'profile':profile, 'error_message':error_message})
+    return response
 
 @login_required
 def my_gigs(request):
@@ -202,11 +213,18 @@ def gigs(request):
     return response
 
 def gig(request, gig_id):
-    context_dict = {}
-
     gig = Gig.objects.get(id=gig_id)
-    ##how to easily access performers from gig table
-    ##p = gig.performer.Performers.all()
+    profile = get_profile(request)
+    attendee = Attendees.objects.get(Attendee=profile)
+
+    if request.method == "POST":
+        going = request.POST.getlist('goingGig')
+        if len(going)==1:
+            attendee.Gigs.add(gig)
+        else:
+            attendee.Gigs.remove(gig)
+
+    context_dict = {}
     context_dict['gig'] = gig
     performer = Performer.objects.get(PerformerGig=gig)
     performer_list = performer.Performers.all()
@@ -214,6 +232,7 @@ def gig(request, gig_id):
     context_dict['profile'] = get_profile(request)
     context_dict['gig_picture'] = gig.GigPicture
     num_going = Attendees.objects.filter(Gigs=gig).count()
+    context_dict['going'] = attendee.Gigs.contains(gig)
     context_dict['num_going'] = num_going
     
     response = render(request, 'gig.html', context=context_dict)
@@ -242,33 +261,36 @@ def success_page(request, user_profile_id):
 
 def create_gig(request):
     form = GigForm()
+    success = True
+    success_photo = True
     if request.method == 'POST':
         form = GigForm(request.POST, request.FILES)
 
         if form.is_valid():
-            form.save(commit=True)
-            gig = form.save(commit=True)
-
             if 'GigPicture' in request.FILES:
                 form.GigPicture = request.FILES['GigPicture']
 
-            form.save()
+                gig = form.save(commit=True)
 
-            user = get_profile(request)
+                user = get_profile(request)
 
-            q = UserProfile.objects.filter(id=user.id)
-            
-            gig.save()
+                q = UserProfile.objects.filter(id=user.id)
+                
+                gig.save()
 
-            x = Performer.objects.get_or_create(PerformerGig=gig)
-            x[0].Performers.set(q)
+                x = Performer.objects.get_or_create(PerformerGig=gig)
+                x[0].Performers.set(q)
 
+                performer = Performer.objects.get(PerformerGig=gig)
+                performer.Performers.add(UserProfile.objects.get(UserField=request.user))
 
-            return redirect('/gigluvver_app/')
+                return redirect('/gigluvver_app/')
+            else:
+                success_photo = False
         else:
             print(form.errors)
-
-    return render(request, 'create_gig.html', context={'profile':get_profile(request), 'form':form})
+            success = False
+    return render(request, 'create_gig.html', context={'profile':get_profile(request), 'form':form, 'success':success, 'success_photo':success_photo})
 
 def delete_gig(request):
     form  = DeleteForm()

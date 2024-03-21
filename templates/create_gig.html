@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
+{% load static %}
 
 {% block title_block %}
     GigLuvver - Create Gig
 {% endblock %}
 
 {% block body_block %}
+    {% if not success_photo %}
+    <p>Please provide a gig picture.</p>
+    {% elif not success %}
+    <p>Invalid entry. Please fill out all fields.</p>
+    {% endif %}
     {% if profile.IsPerformer %}
     <form method="post" action="{% url 'gigluvver_app:create_gig' %}" enctype="multipart/form-data">
         {% csrf_token %}

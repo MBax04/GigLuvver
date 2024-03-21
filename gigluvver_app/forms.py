@@ -33,6 +33,6 @@ class GigForm(forms.ModelForm):
 class DeleteForm(forms.ModelForm):
 	class Meta:
 		model = Performer
-		fields = ('PerformerGig',)
+		fields = ('PerformerGig', 'Performers')
 
 		

@@ -17,6 +17,14 @@
 
         <input type="submit" value="Delete Gig">
     </form>
+
+    <select id="gig-delete">
+        <option value="">All Gigs</option>
+        {% for gig in gigs %}
+            <option value="{{ gig.id }}">{{ gig.GigName }}</option>
+        {% endfor %}
+    </select>
+
     {% else %}
     <p>Not logged in as an artist.</p>
     {% endif %}

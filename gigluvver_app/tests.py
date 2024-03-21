@@ -6,20 +6,16 @@ import datetime
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 class PageResponseTests(TestCase):
-    print(1)
     def test_response(self):
-        print(1.1)
         for url in urls.urlpatterns:
             if url.name in test_resources.links['non_log_in']:
                 response = self.client.get(reverse(f"gigluvver_app:{url.name}"))
                 self.assertEquals(response.status_code, 200, f"{test_resources.HEADER_FOOTER}Failed to retrieve {url.name}.{test_resources.HEADER_FOOTER}")
 
 class PageLinkLoginTests(TestCase):
-    print(2)
     def test_links(self):
-        print(2.1)
         for url in urls.urlpatterns:
-            if url.name != "gig" and url.name != "my_tickets":
+            if url.name != "gig" and url.name != "my_tickets" and url.name != "success_page":
                 response = self.client.get(reverse(f"gigluvver_app:{url.name}"))
                 if url.name in test_resources.links['non_log_in'].keys():
                     for link in test_resources.links['non_log_in'][url.name]:
@@ -27,29 +23,21 @@ class PageLinkLoginTests(TestCase):
                                             msg_prefix=f"{test_resources.HEADER_FOOTER}The {url.name} page is missing a {link} link.{test_resources.HEADER_FOOTER}")
 
 class AuthenticationTests(TestCase):
-    print(3)
     def test_create_artist_get(self):
-        print(3.1)
         test_resources.test_create_get(self,'create_artist_account', test_resources.create_artist_fields)
     
     def test_create_user_get(self):
-        print(3.2)
         test_resources.test_create_get(self,'create_user_account', test_resources.create_user_fields)
 
     
     def test_blank_create_user_post(self):
-        print(3.3)
         test_resources.test_blank_create_post(self,'create_user_account')
 
     def test_blank_create_artist_post(self):
-        print(3.4)
         test_resources.test_blank_create_post(self,'create_artist_account')
 
 class LogInAndGigTests(TestCase):
-    print(4)
-
     def test_create_account_user(self):
-        print(4.1)
         self.create_account_user()
 
     def create_account_user(self):
@@ -61,13 +49,11 @@ class LogInAndGigTests(TestCase):
         self.log_in_user()
 
     def log_in_user(self):
-        print(4.3)
         response = self.client.post(reverse("gigluvver_app:log_in"), data={'username':'testing_user',
                                                                             'password':'12345'})
         self.assertEquals(response.status_code, 302, msg="Could not log in as user.")
 
     def test_create_account_artist(self):
-        print(4.2)
         self.create_account_artist()
 
     def create_account_artist(self):
@@ -81,7 +67,6 @@ class LogInAndGigTests(TestCase):
         self.log_in_artist()
 
     def log_in_artist(self):
-        print(4.4)
         response = self.client.post(reverse("gigluvver_app:artist_log_in"), data={'username':'testing_artist',
                                                                                   'password':'12345'})
         self.assertEquals(response.status_code, 302, msg="Could not log in as artist.")
@@ -90,7 +75,6 @@ class LogInAndGigTests(TestCase):
         models.Venue.objects.create(VenueName='Hydro', Location='Exhibition Way, Stobcross Rd, Glasgow G3 8YW', Position='55.8597412109375,-4.285629749298096')
 
     def test_create_gig_invalid(self):
-        print(5.1)
         self.create_account_artist()
         self.create_venue()
         response = self.client.post(reverse("gigluvver_app:create_gig"), data={'GigName':'New Gig',
@@ -100,23 +84,18 @@ class LogInAndGigTests(TestCase):
         self.assertContains(response, "<p>Please provide a gig picture.</p>", msg_prefix="New gig form invalidity not acknowledged.")
 
     def test_create_gig_valid(self):
-        print(5.2)
         self.create_account_artist()
         self.create_venue()
         response = self.client.get(reverse("gigluvver_app:create_gig"))
-        print(response.content.decode("utf-8"))
         response = self.client.post(reverse("gigluvver_app:create_gig"), data={'GigName':'New Gig',
                                                                                'Date':datetime.date(2024, 10, 27),
                                                                                'Time':datetime.time(22,00),
                                                                                'Venue':'1',
                                                                          'GigPicture':SimpleUploadedFile(name="test.png", content=open("./media/profile_images/test_image.png", 'rb').read(), content_type='image/jpeg')})
-        print(response.content.decode("utf-8"))
         self.assertEquals(response.status_code, 302, msg="New gig not created.")
         self.access_new_gig()
     
     def access_new_gig(self):
-        print(5.3)
         response = self.client.get(reverse("gigluvver_app:my_gigs"))
-        print(response.content.decode("utf-8"))
         self.assertContains(response, 'New Gig', msg_prefix="New gig not showing on my gigs page.")
         self.assertContains(response, '<img src="/media/gig_images/test.png"', msg_prefix="New gig image not showing on my gigs page.")

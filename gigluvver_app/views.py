@@ -304,11 +304,9 @@ def delete_gig(request):
 
         gig_id = form['PerformerGig'].value()
         
-        print("Bleh")
-        print(user.id)
-        print(form["Performers"].value()[0])
-        if int(form["Performers"].value()[0]) == user.id:
-            Gig.objects.filter(id=gig_id).delete()
+        if len(form['Performers'].value()) >= 1:
+            if int(form["Performers"].value()[0]) == user.id:
+                Gig.objects.filter(id=gig_id).delete()
           
         
 

@@ -34,5 +34,3 @@ class DeleteForm(forms.ModelForm):
 	class Meta:
 		model = Performer
 		fields = ('PerformerGig', 'Performers')
-
-		

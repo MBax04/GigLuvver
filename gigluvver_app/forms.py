@@ -1,9 +1,5 @@
 from django import forms
-<<<<<<< Updated upstream
 from gigluvver_app.models import UserProfile,Gig, Performer, Attendees
-=======
-from gigluvver_app.models import UserProfile,Gig, Performer
->>>>>>> Stashed changes
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
@@ -37,10 +33,4 @@ class GigForm(forms.ModelForm):
 class DeleteForm(forms.ModelForm):
 	class Meta:
 		model = Performer
-<<<<<<< Updated upstream
-		fields = ('PerformerGig', 'Performers')
-
-		
-=======
 		fields = ('PerformerGig',)
->>>>>>> Stashed changes

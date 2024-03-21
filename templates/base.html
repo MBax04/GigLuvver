@@ -5,6 +5,7 @@
 <head lang="en">
     <meta charset="UTF-8" /> 
     <title>Gig Luvver</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/GigLuvver_Logo.jpeg' %}">
     {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
@@ -14,12 +15,13 @@
 </head>
 <body> 
     <div id="topbar" class="fixed">
+        <a class="nav-link" href="{% url 'gigluvver_app:home' %}"><p class="fs-4 fw-bold mb-0"><img src="{% static 'images/GigLuvver_Logo.jpeg' %}" alt="Logo" style="width: 70px; height: 70px; border-radius: 50%;"></p></a>
         <h1><p class="fs-1 fw-bold mb-0">{% block title_block %}Gig Luvver{% endblock %}</p></h1>
-        
             <div id="topbar-buttons">
             {% if user.is_authenticated %}
+            <h2>{{ request.user.username }}</h2>
             <form action="{% url 'gigluvver_app:log_out' %}" method="get">
-                <button type="submit" class="btn btn-primary">LogOut</button>
+                <button type="submit" class="btn btn-secondary">LogOut</button>
             </form>
             {% else %}
             <div class="dropdown">
@@ -60,7 +62,9 @@
         </div>
         <div id="content">
             {% block body_block %}
-            {% endblock %} 
+            {% endblock %}
+            <button type="button" class="btn btn-primary" onclick="goBack()">Go Back</button>
+            <script src="{% static 'otherJS.js' %}"></script>
         </div>
     </div>
 </body>

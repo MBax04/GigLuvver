@@ -40,6 +40,16 @@ GigLuvver - {{ gig.GigName }}
             <ul>
                 <li><p>Number of people going: {{ num_going }}</p></li>
             </ul>
+        <form id="user_form" method="post" action="{% url 'gigluvver_app:gig' gig.id %}">
+            {% csrf_token %}
+            <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" value="goingGig" id="goingGig" name="goingGig"{% if going %} checked{% endif %}>
+                    <label class="form-check-label" for="goingGig">
+                    Going
+                    </label>
+            </div>
+            <button type="submit" name="confirm" value="Going Gig">Confirm</button>
+        </form>
     </ul>
     {% else %}
         <strong>There are no performers present.</strong>

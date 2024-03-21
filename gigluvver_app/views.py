@@ -213,9 +213,18 @@ def gigs(request):
     return response
 
 def gig(request, gig_id):
-    context_dict = {}
-
     gig = Gig.objects.get(id=gig_id)
+    profile = get_profile(request)
+    attendee = Attendees.objects.get(Attendee=profile)
+
+    if request.method == "POST":
+        going = request.POST.getlist('goingGig')
+        if len(going)==1:
+            attendee.Gigs.add(gig)
+        else:
+            attendee.Gigs.remove(gig)
+
+    context_dict = {}
     context_dict['gig'] = gig
     performer = Performer.objects.get(PerformerGig=gig)
     performer_list = performer.Performers.all()
@@ -223,6 +232,7 @@ def gig(request, gig_id):
     context_dict['profile'] = get_profile(request)
     context_dict['gig_picture'] = gig.GigPicture
     num_going = Attendees.objects.filter(Gigs=gig).count()
+    context_dict['going'] = attendee.Gigs.contains(gig)
     context_dict['num_going'] = num_going
     
     response = render(request, 'gig.html', context=context_dict)

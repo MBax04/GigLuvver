@@ -53,6 +53,24 @@ document.addEventListener("DOMContentLoaded", function() {
                     return nameB.localeCompare(nameA);
                 }
             });
+        } else if (sortOrder === 'soon' || sortOrder === 'leastSoon') {
+            sortedGigs = Array.from(gigs).sort(function(a, b) {
+                var dateA = parseInt(a.getAttribute("data-date"));
+                var dateB = parseInt(b.getAttribute("data-date"));
+                var timeA = parseInt(a.getAttribute("data-time"));
+                var timeB = parseInt(b.getAttribute("data-time"));
+                if (sortOrder === 'soon') {
+                    if (dateA === dateB){
+                        return timeA - timeB;
+                    }
+                    return dateA - dateB;
+                } else {
+                    if (dateA === dateB){
+                        return timeB - timeA;
+                    }
+                    return dateB - dateA;
+                }
+            });
         }
 
         while (gigList.firstChild) {

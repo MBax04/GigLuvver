@@ -40,6 +40,7 @@ GigLuvver - {{ gig.GigName }}
             <ul>
                 <li><p>Number of people going: {{ num_going }}</p></li>
             </ul>
+        {% if user.is_authenticated %}
         <form id="user_form" method="post" action="{% url 'gigluvver_app:gig' gig.id %}">
             {% csrf_token %}
             <div class="form-check form-switch">
@@ -50,6 +51,7 @@ GigLuvver - {{ gig.GigName }}
             </div>
             <button type="submit" name="confirm" value="Going Gig">Confirm</button>
         </form>
+        {% endif %}
     </ul>
     
     

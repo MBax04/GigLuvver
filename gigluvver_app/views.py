@@ -215,14 +215,16 @@ def gigs(request):
 def gig(request, gig_id):
     gig = Gig.objects.get(id=gig_id)
     profile = get_profile(request)
-    attendee = Attendees.objects.get(Attendee=profile)
+    if request.user.is_authenticated:
+        attendee = Attendees.objects.get(Attendee=profile)
 
-    if request.method == "POST":
-        going = request.POST.getlist('goingGig')
-        if len(going)==1:
-            attendee.Gigs.add(gig)
-        else:
-            attendee.Gigs.remove(gig)
+        if request.method == "POST":
+            going = request.POST.getlist('goingGig')
+            if len(going)==1:
+                attendee.Gigs.add(gig)
+            else:
+                attendee.Gigs.remove(gig)
+    
 
     context_dict = {}
     context_dict['gig'] = gig

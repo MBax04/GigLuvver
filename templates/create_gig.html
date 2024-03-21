@@ -6,6 +6,9 @@
 {% endblock %}
 
 {% block body_block %}
+    {% if not success %}
+    <p>Invalid entry. Please fill out all fields.</p>
+    {% endif %}
     {% if profile.IsPerformer %}
     <form method="post" action="{% url 'gigluvver_app:create_gig' %}">
         {% csrf_token %}

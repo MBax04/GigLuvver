@@ -249,15 +249,17 @@ def success_page(request):
 
 def create_gig(request):
     form = GigForm()
+    success = True
     if request.method == 'POST':
         form = GigForm(request.POST)
 
-        if form.is_valid():
+        if form.is_valid() and request.FILES.get('GigPicture'):
             form.save(commit=True)
             return redirect('/gigluvver_app/')
         else:
             print(form.errors)
-    return render(request, 'create_gig.html', context={'profile':get_profile(request), 'form':form})
+            success = False
+    return render(request, 'create_gig.html', context={'profile':get_profile(request), 'form':form, 'success':success})
 
 def get_profile(request):
     try:

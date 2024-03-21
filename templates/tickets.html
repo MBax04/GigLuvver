@@ -10,7 +10,13 @@ GigLuvver - Tickets
     <ul class = "nav">
         {% for gig in gigs %}
             <li data-venue="{{ gig.Venue.id }}" class = "nav-item" style="width: 150px; margin: 10px;">
-                <a href="{% url 'gigluvver_app:gig' gig.id %}" class="d-block text-center fw-bold mb-0 fs-5 text-decoration-none"><img src="{{ gig.GigPicture.url }}" alt="Gig Picture" style="width: 150px; height: 225px;"/>{{ gig.GigName }}</a>
+                <a href="{% url 'gigluvver_app:gig' gig.id %}" class="d-block text-center fw-bold mb-0 fs-5 text-decoration-none">
+                {% if gig.GigPicture %}
+                <img src="{{ gig.GigPicture.url }}" alt="Gig Picture" style="width: 150px; height: 225px;"/><br/>
+                {% else %}
+                <img src="{% static 'images/default_poster.jpg' %}" alt="Gig Picture" style="width: 150px; height: 225px;"/><br/>
+                {% endif %}
+                {{ gig.GigName }}</a>
             </li>
         {% endfor %}
     </ul>

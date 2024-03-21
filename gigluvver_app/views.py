@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
-from gigluvver_app.forms import UserForm, ArtistProfileForm, UserProfileForm, GigForm
+from gigluvver_app.forms import UserForm, ArtistProfileForm, UserProfileForm, GigForm, DeleteForm
 from django.contrib.auth.decorators import login_required
 from gigluvver_app.models import Gig, Performer, Venue, UserProfile, Attendees
 from django.db.models import Count
@@ -110,8 +110,8 @@ def create_artist_account(request):
     registered = False
 
     if request.method == 'POST':
-        user_form = UserForm(request.POST)
-        profile_form = ArtistProfileForm(request.POST)
+        user_form = UserForm(request.POST, request.FILES)
+        profile_form = ArtistProfileForm(request.POST, request.FILES)
 
         if user_form.is_valid():
             user = user_form.save()
@@ -264,13 +264,26 @@ def create_gig(request):
     success = True
     success_photo = True
     if request.method == 'POST':
-        form = GigForm(request.POST)
+        form = GigForm(request.POST, request.FILES)
 
         if form.is_valid():
-            if request.FILES.get('GigPicture'):
+            if 'GigPicture' in request.FILES:
+                form.GigPicture = request.FILES['GigPicture']
+
                 gig = form.save(commit=True)
+
+                user = get_profile(request)
+
+                q = UserProfile.objects.filter(id=user.id)
+                
+                gig.save()
+
+                x = Performer.objects.get_or_create(PerformerGig=gig)
+                x[0].Performers.set(q)
+
                 performer = Performer.objects.get(PerformerGig=gig)
                 performer.Performers.add(UserProfile.objects.get(UserField=request.user))
+
                 return redirect('/gigluvver_app/')
             else:
                 success_photo = False
@@ -278,6 +291,30 @@ def create_gig(request):
             print(form.errors)
             success = False
     return render(request, 'create_gig.html', context={'profile':get_profile(request), 'form':form, 'success':success, 'success_photo':success_photo})
+
+def delete_gig(request):
+    form  = DeleteForm()
+
+    if request.method == 'POST':
+        form = DeleteForm(request.POST)
+
+    
+
+        user = get_profile(request)
+
+        gig_id = form['PerformerGig'].value()
+        
+        print("Bleh")
+        print(user.id)
+        print(form["Performers"].value()[0])
+        if int(form["Performers"].value()[0]) == user.id:
+            Gig.objects.filter(id=gig_id).delete()
+          
+        
+
+        return redirect('/gigluvver_app/')
+
+    return render(request, 'delete_gig.html', context={'profile':get_profile(request), 'form':form})
 
 def get_profile(request):
     try:
@@ -287,3 +324,4 @@ def get_profile(request):
             return None
     except UserProfile.DoesNotExist:
         return None
+    

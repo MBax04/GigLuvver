@@ -12,7 +12,7 @@
     <p>Invalid entry. Please fill out all fields.</p>
     {% endif %}
     {% if profile.IsPerformer %}
-    <form method="post" action="{% url 'gigluvver_app:create_gig' %}">
+    <form method="post" action="{% url 'gigluvver_app:create_gig' %}" enctype="multipart/form-data">
         {% csrf_token %}
         {% for field in form.visible_fields %}
             {{ field.errors }}

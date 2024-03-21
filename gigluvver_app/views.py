@@ -276,6 +276,7 @@ def delete_gig(request):
     if request.method == 'POST':
         form = DeleteForm(request.POST)
 
+<<<<<<< Updated upstream
     
 
         user = get_profile(request)
@@ -289,6 +290,11 @@ def delete_gig(request):
         
 
         return redirect('/gigluvver_app/')
+=======
+        gig_id = form['PerformerGig'].value()
+
+        Gig.objects.filter(id=gig_id).delete()
+>>>>>>> Stashed changes
 
     return render(request, 'delete_gig.html', context={'profile':get_profile(request), 'form':form})
 
